@@ -1,11 +1,11 @@
 /* Reset dasar */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Quicksand",sans-serif;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #f4f4f9; /* Latar belakang utama */
+  background-color: #e8e4e4; 
   box-sizing: border-box;
 }
 
@@ -17,11 +17,10 @@ header.main-header {
   color: #00274D;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-}
+header .logo {
+  height: 40px; /* Sesuaikan tinggi logo */
+  width: auto;  /* Memastikan proporsi gambar tetap */
+} 
 
 .user-info {
   display: flex;
@@ -125,7 +124,7 @@ header h1 {
 
 .card {
   flex: 1;
-  background-color: #f4f4f9;
+  background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
@@ -133,10 +132,8 @@ header h1 {
   font-weight: bold;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-/* Recent Loans section */
 .recent-loans-section h2 {
-  margin: 0 0 10px 0;
+margin: 0 0 10px 0;
 }
 
 table {
@@ -150,7 +147,28 @@ table th, table td {
   border: 1px solid #ddd;
   text-align: left;
 }
+table tbody tr:nth-child(odd) {
+  background-color: #e8e4e4; 
+}
+.search-box {
+  margin-left: auto; /* Dorong elemen ke kanan */
+}
 
-table th {
-  background-color: #f4f4f9;
+.search-box input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px; /* Sesuaikan lebar input */
+}
+.search-box button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555; /* Warna ikon */
+}
+.topofcontent{
+  display: flex;
+  
 }
