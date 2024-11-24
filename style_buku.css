@@ -1,0 +1,243 @@
+/* Reset dasar */
+body {
+    margin: 0;
+    font-family: "Quicksand",sans-serif;
+    height: 100vh;
+    background-color: #e8e4e4; 
+    box-sizing: border-box;
+  }
+  
+  header.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: #00274D;
+  }
+  
+  header .logo {
+    height: 40px; /* Sesuaikan tinggi logo */
+    width: auto;  /* Memastikan proporsi gambar tetap */
+  } 
+  
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+  }
+  
+  .user-info .user-icon {
+    font-size: 20px;
+  }
+  
+  /* Layout halaman */
+  .page-layout {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+  }
+  
+  .sidebar {
+    margin: 10px;
+    width: 300px;
+    background-color: #00274D;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 620px;
+    padding-top: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px; /* Sudut membulat */
+    
+  }
+  
+  .profile-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture {
+    width: 70px;
+    height: 70px;
+    background-color: #004080;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  .username {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .menu {
+    width: 100%;
+  }
+  
+  .menu ul {
+    list-style: none;
+    padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+    
+    .menu ul li {
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .menu ul li:hover,
+    .menu ul li.active {
+      background-color: #003366;
+    }
+    
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .h2_class {
+      display: flex; /* Aktifkan Flexbox */
+      justify-content: space-between; /* Sejajar ke kanan */
+      width: 1170px;
+      height: 60px; /* Set a fixed height for one line (adjust as needed) */
+
+    }
+    
+    
+    
+    /* Dashboard section */
+    .dashboard-section h2 {
+        margin: 0 0 5px 0;
+    }
+    
+    .dashboard {
+        display: flex;
+        gap: 20px;
+    }
+    /* Container for buttons */
+    .button-container {
+        display: flex;
+        justify-content: space-between; /* Space between buttons */
+        align-items: center;
+        background-color: #e8e4e4; /* Background color of the container */
+    }
+    
+    /* Style for the buttons */
+    .custom-button {
+        display: flex; /* Flexbox for aligning text and icon */
+        align-items: center; /* Center content vertically */
+        background-color: #00274d; /* Dark blue background */
+        color: white; /* White text */
+        border: none; /* Remove default border */
+        border-radius: 10px; /* Rounded corners */
+    padding: 10px 20px; /* Internal padding for the button */
+    font-family: "Quicksand", sans-serif; /* Font style */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    width: 220px;
+}
+
+/* Hover effect */
+.custom-button:hover {
+    background-color: #003366; /* Slightly lighter blue on hover */
+}
+
+.custom-button .icon {
+    font-size: 16px; /* Icon size */
+    font-weight: bold; /* Make the icon bold */
+    margin-right: 40px; /* Space between the icon and text */
+}
+/*Dashboard                     */
+.content {
+  background-color: #ffffff;
+border-radius: 10px;
+box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+padding: 20px;
+}
+h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    flex-direction: column;
+}
+.recent-loans-section p{
+    justify-content: left;
+}
+
+.topofcontent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align to the left, you can change this to center if needed */
+}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table tr{
+        gap: 200px;
+    }
+    table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+      align-items: flex-start;
+    }
+    table th{
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+      
+    
+    table tbody tr:nth-child(odd) {
+      background-color: #e8e4e4; 
+    }
+    .search-box {
+        display: flex;
+        justify-content: space-between; /* Distribute space between elements */
+        align-items: center; /* Vertically center the items */
+        margin-left: auto; /* Push the element to the right */
+        width: 100%; /* Ensure the container takes full width */
+
+    
+    }
+    
+    .search-box p {
+        margin: 0; /* Remove default margin */
+        flex-shrink: 0; /* Prevent the paragraph from shrinking */
+    }
+    
+    .search-box input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        width: 200px; /* Adjust the input width as needed */
+    }
+    
+    .search-box button {
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        color: #555; /* Icon color */
+    }
+    .content-button{
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between; /* Space between buttons */
+        align-items: center;
+    }

@@ -2,8 +2,6 @@
 body {
   margin: 0;
   font-family: "Quicksand",sans-serif;
-  display: flex;
-  flex-direction: column;
   height: 100vh;
   background-color: #e8e4e4; 
   box-sizing: border-box;
@@ -21,6 +19,7 @@ header .logo {
   height: 40px; /* Sesuaikan tinggi logo */
   width: auto;  /* Memastikan proporsi gambar tetap */
 } 
+
 
 .user-info {
   display: flex;
@@ -47,9 +46,11 @@ header .logo {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 620px;
   padding-top: 20px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px; /* Sudut membulat */
+  
 }
 
 .profile-section {
@@ -82,31 +83,38 @@ header .logo {
 .menu ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-  width: 100%;
-}
-
-.menu ul li {
-  padding: 15px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.menu ul li:hover,
-.menu ul li.active {
-  background-color: #003366;
-}
-
-/* Main Content Area */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.content {
-  background-color: #ffffff;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .menu ul li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu ul li:hover,
+  .menu ul li.active {
+    background-color: #003366;
+  }
+  
+  /* Main Content Area */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .h2_class {
+    display: flex; /* Aktifkan Flexbox */
+    justify-content: space-between; /* Sejajar ke kanan */
+    width: 1000px;
+  }
+  
+  
+  .content {
+    background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;

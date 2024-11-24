@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satu Perpus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style_buku.css">
+</head>
+<body>
+  <header class="main-header">
+    <img src="img/Group 16.svg" alt="Satu Perpus Logo" class="logo" />
+    <div class="user-info">
+      <span>aska skata</span>
+      <img src="img/heading_icon.svg"/>
+    </div>
+  </header>
+  <div class="page-layout">
+    <div class="sidebar">
+      <div class="profile-section">
+        <div class="profile-picture">
+          <img src="img/icon_nav.png" />
+        </div>
+        <p class="username">aska skata</p>
+      </div>
+      <nav class="menu">
+        <ul>
+        <li class="active">Menu</li>
+          <li>Beranda</li>
+          <li>Transaksi</li>
+          <li>Data Buku</li>
+          <li class="active">Data Anggota</li>
+          <li>Data Pengunjung</li>
+          <li>Pengaturan</li>
+        </ul>
+      </nav>
+    </div>
+        <!-- Main Content Area -->
+        <div class="main-content">
+        <div class="h2_class">
+            <h2 style="margin: 15px 0 0 0;">Data Anggota</h2>
+            <h3 style="padding-top: 20px;">Beranda > Data Buku</h3>
+        </div>
+        <div class="button-container">
+            <button class="custom-button">
+              <span class="icon">+</span>
+              Tambah Anggota
+            </button>
+            <button class="custom-button" style="justify-content: center;">Laporan Anggota</button>
+          </div>
+
+            <!-- Dashboard Section -->
+      <!-- Recent Loans Section -->
+      <div class="content">
+        <div class="recent-loans-section">
+          <div class="topofcontent">
+            <h2>Peminjaman Terbaru</h2>
+            <div class="search-box">
+                <p>Menampilkan 1 Data</p>
+              <button type="submit"><input type="text" placeholder="cari" />🔍</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                  <th>#<img src="img/lucide_sort-desc.svg" style="text-align: right;"></th>
+                  <th>ID<img src="img/flowbite_sort-outline.svg" alt=""></th>
+                <th>Judul Buku <img src="img/flowbite_sort-outline.svg" alt=""></th>
+                <th>Pengarang<img src="img/flowbite_sort-outline.svg" alt=""></th>
+                <th>Tahun<img src="img/flowbite_sort-outline.svg" alt=""></th>
+                <th>Klasifikasi<img src="img/flowbite_sort-outline.svg" alt=""></th>
+                <th>Jumlah<img src="img/flowbite_sort-outline.svg" alt=""></th>
+                <th>Aksi<img src="img/flowbite_sort-outline.svg" alt=""></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="8">Belum ada data</td>
+              </tr>
+
+            </tbody>
+          </table>
+          <div class="content-button">
+              <p>Menampilkan 0 dari 0 data</p>
+              <div style="display: flex; gap: 20px;">
+              <button class="custom-button" style="justify-content: center;">Tambah Anggota</button>
+              <button class="custom-button" style="justify-content: center;">Laporan Anggota</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
