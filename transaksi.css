@@ -20,7 +20,10 @@ body {
     width: auto;  /* Memastikan proporsi gambar tetap */
   } 
   
-  
+  a {
+    text-decoration: none; /* Menghapus garis bawah */
+    color: inherit; /* Menggunakan warna teks elemen induk */
+}
   .user-info {
     display: flex;
     align-items: center;
