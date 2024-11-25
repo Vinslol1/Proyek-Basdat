@@ -259,4 +259,22 @@ h3 {
         display: flex;
         justify-content: space-between; /* Space between buttons */
         align-items: center;
+    
+    
+    
+    }.display-data {
+        display: flex; /* Align items horizontally */
+        align-items: center; /* Vertically align items */
+        gap: 5px; /* Add spacing between elements */
+        }
+    
+    .dropdown {
+        padding: 4px 8px; /* Add padding for dropdown */
+        border: 1px solid #ccc; /* Border for dropdown */
+        border-radius: 4px; /* Rounded corners */
+        font-size: 14px; /* Match font size with text */
+        color: #333; /* Text color for dropdown */
+        background-color: #fff; /* White background */
+        appearance: none; /* Remove default dropdown styles for better customization */
     }
+    
