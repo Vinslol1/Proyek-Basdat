@@ -118,6 +118,7 @@ body {
     }
     .topofcontent h2{
         height: 15px;
+        font-size: 20;
     }
     .h2_class {
       display: flex; /* Aktifkan Flexbox */
@@ -285,4 +286,67 @@ h3 {
         background-color: #fff; /* White background */
         appearance: none; /* Remove default dropdown styles for better customization */
     }
+/* Mengatur tampilan seluruh halaman */
+
+/* Membungkus form agar di tengah */
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* Grup input */
+.input-group {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.input-group label {
+    display: flex;
+    align-items: center;
+}
+
+.label-text {
+    text-align: right;
+    min-width: 120px;
     
+}
+
+/* Wrapper untuk ikon dan input */
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-wrapper .icon img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Input styling */
+.input-wrapper input {
+    width: 100%;
+    padding: 10px 10px 10px 40px; /* Ruang ekstra untuk ikon */
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-wrapper input:focus {
+    border-color: #007bff;
+}
