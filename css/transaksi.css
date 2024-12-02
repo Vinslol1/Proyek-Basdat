@@ -199,40 +199,51 @@ h3 {
     flex-direction: column;
     align-items: flex-start; /* Align to the left, you can change this to center if needed */
 }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    table tr{
-        gap: 200px;
-    }
-    table td {
-        color: #000;
-        font-family: Quicksand;
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        padding: 10px;
-    }
-    table th{
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-align: left;
-        justify-content: space-between;
-    }
-    .td_icon{
-        display: flex;
-        justify-content: space-between;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
 
-    }
+table tr {
+  gap: 200px;
+}
 
-      
+table td {
+  color: #000;
+  font-family: Quicksand, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  justify-content: space-between;
+}
+
+.td_icon {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Alternate row coloring */
+table tbody tr:nth-child(odd) {
+  background-color: #e8e4e4;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #fff;
+}
+.left-column{
+  font-weight: bold;
+}
     
-    table tbody tr:nth-child(odd) {
-      background-color: #e8e4e4; 
-    }
     .search-box {
         display: flex;
         justify-content: space-between; /* Distribute space between elements */
