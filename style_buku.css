@@ -18,8 +18,7 @@ body {
   header .logo {
     height: 40px; /* Sesuaikan tinggi logo */
     width: auto;  /* Memastikan proporsi gambar tetap */
-  } 
-  
+  }
   
   .user-info {
     display: flex;
@@ -289,3 +288,6 @@ h3 {
         appearance: none; /* Remove default dropdown styles for better customization */
     }
     
+    .material-symbols-outlined {
+      font-size: 170px; 
+  }
