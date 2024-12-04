@@ -10,20 +10,15 @@
     </head>
     <body>
         <header class="main-header">
-            <img src="../img/Group 16.svg" alt="Satu Perpus Logo" class="logo" style="padding-left: 50px;">
             <div class="user-info">
                 <span>aska skata</span>
                 <img src="../img/heading_icon.svg" alt="User Icon">
             </div>
         </header>
+
         <div class="page-layout">
             <div class="sidebar">
-                <div class="profile-section">
-                    <div class="profile-picture">
-                        <img src="../img/icon_nav.png" alt="Profile Picture">
-                    </div>
-                    <p class="username">aska skata</p>
-                </div>
+                <img id="logo" src="../img/Group 16.svg" alt="Satu Perpus Logo" class="logo">
                 <nav class="menu">
                     <ul>
                         <li>Menu</li>
@@ -38,10 +33,6 @@
             </div>
             <!-- Main Content Area -->
             <div class="main-content">
-                <div class="h2_class">
-                    <h2 style="margin: 15px 0 0 0;">Data Pustaka</h2>
-                    <h3 style="padding-top: 20px; padding-right: 33px;">Beranda > Data Buku > Data Pustaka  </h3>
-                </div>
                 <div class="content">
                     <h2 class="topofcontent">Tambah Data Anggota</h2>
                     <div class="center-container">
@@ -51,7 +42,7 @@
                                     <span class="label-text">Nama Anggota</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="nama-anggota" name="nama-anggota" style="width: 668px;">
+                                    <input type="text" id="nama-anggota" name="nama-anggota" style="width: 417px;">
                                 </div>
                             </div>
                         
@@ -69,7 +60,7 @@
                                     <span class="label-text">Tanggal Lahir</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="tanggal-lahir" name="tanggal-lahir" placeholder="hh/bb/tttt" class="date-input" style="width: 252px;">
+                                    <input type="date" id="tanggal-lahir" class="date-input" style="width: 417px;">
                                 </div>
                             </div>                            
                         
@@ -78,7 +69,7 @@
                                     <span class="label-text">Jenis Kelamin</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <select id="jenis-kelamin" name="jenis-kelamin" style="width: 130px;">
+                                    <select id="jenis-kelamin" name="jenis-kelamin" style="width: 417px;">
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
@@ -90,7 +81,7 @@
                                     <span class="label-text">Telepon</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="tel" id="telepon" name="telepon" style="width: 183px;">
+                                    <input type="tel" id="telepon" name="telepon" style="width: 417px;">
                                 </div>
                             </div>
                         
@@ -99,7 +90,7 @@
                                     <span class="label-text">NIK</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="nik" name="nik" style="width: 252px;">
+                                    <input type="text" id="nik" name="nik" style="width: 417px;">
                                 </div>
                             </div>
                         
@@ -108,7 +99,7 @@
                                     <span class="label-text">Pekerjaan</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="pekerjaan" name="pekerjaan" style="width: 144pxpx;">
+                                    <input type="text" id="pekerjaan" name="pekerjaan" style="width: 417px;">
                                 </div>
                             </div>
                         
@@ -117,20 +108,15 @@
                                     <span class="label-text">Alamat</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <textarea id="alamat" name="alamat" rows="4" style="width: 518px; height: 115px;"></textarea>
+                                    <textarea id="alamat" name="alamat" rows="4" style="width: 417px; height: 115px;"></textarea>
                                 </div>
-                            </div>
-                        
-                            <div class="form-actions">
-                                <button type="submit" style="margin-top: 20px;">Simpan</button>
                             </div>
                         </form>
                         
                     </div>
                     
                     <div style="display: flex; gap: 20px; justify-content: right; padding-bottom: 12px;">
-                        <button class="custom-button" style="justify-content: center; width: 121px; height: 43px;">Sebelumnya</button>
-                        <button class="custom-button" style="justify-content: center; width: 121px; height: 43px;">Selanjutnya</button>
+                        <button class="custom-button" type="submit" style="justify-content: center; width: 121px; height: 43px;">Simpan</button>
                     </div>
                 </div>
             </div>
