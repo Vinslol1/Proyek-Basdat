@@ -5,16 +5,11 @@ $password = 'SatuPerpusdb';
 $port = '6543';
 $dbname = 'postgres';
 
-// String koneksi
-$conn_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
-
-// Membuka koneksi
-$conn = pg_connect($conn_string);
-
-// Perika koneksi
-if (!$conn) {
-    echo "Koneksi ke PostgreSQL gagal";
-} else {
-    echo "Koneksi berhasil";
+try {
+    $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Koneksi database gagal: " . $e->getMessage());
 }
 ?>

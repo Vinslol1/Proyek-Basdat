@@ -44,20 +44,6 @@ body {
     gap: 20px;
   }
   
-  .sidebar {
-    margin: 10px;
-    width: 300px;
-    background-color: #00274D;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    padding-top: 20px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px; /* Sudut membulat */
-  }
-  
   .profile-section {
     text-align: center;
     margin-bottom: 20px;
@@ -92,10 +78,6 @@ body {
     border-radius: 10px;
     padding: 10px;
     width: 180px;
-  }
-  
-  .menu {
-    width: 100%;
   }
   
   .menu ul {

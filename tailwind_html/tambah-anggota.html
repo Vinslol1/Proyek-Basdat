@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satu Perpus</title>
+    <link rel="stylesheet" href="../style/style2.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="text-white p-4 flex justify-end items-end bg-biru_sidebar">
+        <div id="profile-setting" class="flex items-center gap-2">
+            <span class="text-lg font-medium">aska skata</span>
+            <img src="../img/heading_icon.svg" alt="User Icon" class="w-8 h-8">
+        </div>
+    </header>
+
+    <section class="flex h-screen">
+        <!-- aside -->
+        <div id="aside" class="bg-[#002B53] text-white w-64 pt-4 flex flex-col items-center h-full">
+            <img id="logo" src="../img/Group 16.svg" alt="Satu Perpus Logo" class="mb-8 w-44 bg-[#D9D9D9] p-3 rounded-lg h-auto">
+                <ul class="space-y-4">
+                    <li><a href="../index.html" class="hover:text-gray-300">Beranda</a></li>
+                    <li><a href="../html/transaksi.html" class="hover:text-gray-300">Transaksi</a></li>
+                    <li><a href="../html/Data_buku.html" class="hover:text-gray-300">Data Buku</a></li>
+                    <li><a href="../html/data_anggota.html" class="hover:text-gray-300">Data Anggota</a></li>
+                    <li><a href="../html/data_pengunjung.html" class="hover:text-gray-300">Data Pengunjung</a></li>
+                    <li><a href="../html/pengaturan.html" class="hover:text-gray-300">Pengaturan</a></li>
+                </ul>
+        </div>
+
+        <!-- main -->
+        <div class="flex-1 p-8">
+            <h2 class="text-2xl font-bold mb-6">Tambah Data Anggota</h2>
+
+            <div class="bg-white p-8 shadow rounded-lg">
+                <form class="space-y-6">
+                    <div>
+                        <label for="nama-anggota" class="block text-gray-700 font-medium">Nama Anggota</label>
+                        <input type="text" id="nama-anggota" name="nama-anggota" class="w-full border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div>
+                        <label for="tempat-lahir" class="block text-gray-700 font-medium">Tempat Lahir</label>
+                        <input type="text" id="tempat-lahir" name="tempat-lahir" class="w-full border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div>
+                        <label for="tanggal-lahir" class="block text-gray-700 font-medium">Tanggal Lahir</label>
+                        <input type="date" id="tanggal-lahir" name="tanggal-lahir" class="w-full border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div>
+                        <label for="jenis-kelamin" class="block text-gray-700 font-medium">Jenis Kelamin</label>
+                        <select id="jenis-kelamin" name="jenis-kelamin" class="w-full border border-gray-300 rounded-md p-2">
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="telepon" class="block text-gray-700 font-medium">Telepon</label>
+                        <input type="tel" id="telepon" name="telepon" class="w-full border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div>
+                        <label for="nik" class="block text-gray-700 font-medium">NIK</label>
+                        <input type="text" id="nik" name="nik" class="w-full border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div>
+                        <label for="pekerjaan" class="block text-gray-700 font-medium">Pekerjaan</label>
+                        <input type="text" id="pekerjaan" name="pekerjaan" class="w-full border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div>
+                        <label for="alamat" class="block text-gray-700 font-medium">Alamat</label>
+                        <textarea id="alamat" name="alamat" rows="4" class="w-full border border-gray-300 rounded-md p-2"></textarea>
+                    </div>
+                </form>
+                
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" class="bg-[#002B53] text-white px-6 py-2 rounded-lg hover:bg-[#02203C]">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
