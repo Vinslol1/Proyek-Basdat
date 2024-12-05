@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{html,js,jsx,ts,tsx}"],
+  content: [ "./**/*.{html,js,jsx,ts,tsx}","./src/**/*.{html,js}"],
   theme: {
     extend: {
       colors : {
@@ -11,7 +11,8 @@ module.exports = {
         abu_tabel : '#D9D9D9'
       },
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif']
+        'sand': ['Quicksand', 'sans-serif'],
+        'logo' :['Zen Kurenai','sans-serif']
       },
     },
   },
