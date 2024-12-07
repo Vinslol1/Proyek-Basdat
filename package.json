@@ -10,5 +10,8 @@
     "eject": "react-scripts eject",
     "dev": "npm start",
     "watch": "npx tailwindcss -i \"./src/style/style1.css\" -o \"./src/style/style2.css\" --watch"
+  },
+  "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.3.1"
   }
 }
