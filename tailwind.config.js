@@ -8,7 +8,7 @@ module.exports = {
         biru_hover : '#003566',
         biru_text : '#003261',
         merah_bg : '#B15655',
-        abu_tabel : '#D9D9D9'
+        abu1 : '#D9D9D9'
       },
       fontFamily: {
         'sand': ['Quicksand', 'sans-serif'],
