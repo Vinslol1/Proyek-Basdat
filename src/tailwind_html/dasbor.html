@@ -9,15 +9,18 @@
   <link rel="stylesheet" href="../style/style2.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <style>
-    .material-symbols-outlined {
+    #icon-logo {
         font-size: 2.25rem; 
-    }    
+    }
+    #icon-profil {
+        font-size: 2.5rem; 
+    }        
   </style>
 </head>
-<body class="bg-white flex flex-row h-full">
-    <section class="sidebar flex flex-col bg-biru_sidebar px-12 py-20 h-screen w-1/5">
-        <div id="logo-sapu" class="flex flex-row justify-center w-full font-sand bg-abu1 p-4 rounded-lg space-x-5 text-3xl mb-12 text-biru_text">
-            <span class="material-symbols-outlined w-8 h-8 text-4xl">local_library</span>
+<body class="bg-white flex flex-row h-full font-sand">
+    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-12 py-20 h-screen w-1/5">
+        <div class="flex flex-row justify-center w-full bg-abu1 p-4 rounded-lg space-x-5 text-3xl mb-12 text-biru_text">
+            <span id="icon-logo" class="material-symbols-outlined w-8 h-8 text-4xl">local_library</span>
             <span>SATU PERPUS</span>
         </div>
         <div class="flex flex-col w-full font-sand rounded-lg text-2xl text-white">
@@ -44,11 +47,59 @@
             </div>
         </div>        
     </section>
-    <section class="flex flex-col ">
-        <div>
-
+    <section class="flex flex-col bg-white w-4/5">
+        <div id="profil-pengguna" class="flex flex-row justify-end items-end p-12 space-x-3 text-biru_text font-medium">
+            <span class="flex items-center text-2xl">aska skata</span>
+            <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-    </section>
+        <div class="flex p-8 mb-12 text-3xl font-semibold">
+            <p>Beranda</p>
+        </div>
+        <div class="grid grid-cols-3 gap-8 px-8 justify-center">
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-lg p-6 space-x-4 w-4/5 h-40">
+                <span class="material-symbols-outlined text-5xl">groups</span>
+                <div class="flex flex-col">
+                    <p>Anggota</p>
+                    <p class="text-2xl font-semibold">1</p>
+                </div>
+            </div>
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-lg p-6 space-x-4 w-4/5 h-40">
+                <span class="material-symbols-outlined text-5xl">book</span>
+                <div class="flex flex-col">
+                    <p>Peminjaman</p>
+                    <p class="text-2xl font-semibold">1</p>
+                </div>
+            </div>
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-lg p-6 space-x-4 w-4/5 h-40">
+                <span class="material-symbols-outlined text-5xl">keyboard_return</span>
+                <div class="flex flex-col">
+                    <p>Pengembalian</p>
+                    <p class="text-2xl font-semibold">1</p>
+                </div>
+            </div>
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-lg p-6 space-x-4 w-4/5 h-40">
+                <span class="material-symbols-outlined text-5xl">menu_book</span>
+                <div class="flex flex-col">
+                    <p>Total Buku</p>
+                    <p class="text-2xl font-semibold">1</p>
+                </div>
+            </div>
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-lg p-6 space-x-4 w-4/5 h-40">
+                <span class="material-symbols-outlined text-5xl">auto_stories</span>
+                <div class="flex flex-col">
+                    <p>Buku Tersedia</p>
+                    <p class="text-2xl font-semibold">1</p>
+                </div>
+            </div>
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-lg p-6 space-x-4 w-4/5 h-40">
+                <span class="material-symbols-outlined text-5xl">monetization_on</span>
+                <div class="flex flex-col">
+                    <p>Denda</p>
+                    <p class="text-2xl font-semibold">1</p>
+                </div>
+            </div>
+        </div>
+    </section>    
     
 </body>
 </html>
