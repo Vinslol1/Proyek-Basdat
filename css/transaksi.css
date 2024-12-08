@@ -229,7 +229,6 @@ table th {
 
 .td_icon {
   display: flex;
-  justify-content: space-between;
 }
 
 /* Alternate row coloring */

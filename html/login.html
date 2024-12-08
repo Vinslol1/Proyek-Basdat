@@ -1,0 +1,104 @@
+<!-- Dari Maisyah -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satu Perpus</title>
+    <style>
+/* Reset dasar */
+body {
+  margin: 0;
+  font-family: "Quicksand",sans-serif;
+  height: 100vh;
+  background-color: #e8e4e4; 
+  box-sizing: border-box;
+}
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo svg {
+            width: 50px;
+            height: 50px;
+            fill: #2980b9;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        
+        .form-group input[type="password"] {
+            padding-right: 40px;
+        }
+        
+        .form-group .show-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        
+        .btn {
+            background-color: #2980b9;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease
+        }
+        
+        .btn:hover {
+            background-color: #1a6f9a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text x="0" y="15" font-size="15" fill="#2980b9">A</text></svg>
+        </div>
+        <h2>Masuk</h2>
+        <form>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" placeholder="" required>
+                <span class="show-password">👁</span>
+            </div>
+            <button type="submit" class="btn">Masuk</button>
+        </form>
+    </div>
+</body>
+
+</html>
