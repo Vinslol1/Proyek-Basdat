@@ -1,0 +1,127 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satu Perpus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style-tambah_buku,anggota.css">
+    <link rel="stylesheet" href="../style/style2.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="user-info">
+            <span>aska skata</span>
+            <img src="../img/heading_icon.svg" alt="User Icon">
+        </div>
+    </header>
+
+    <div class="page-layout ">
+        <div class="sidebar bg-biru_sidebar">
+            <img id="logo" src="../img/Group 16.svg" alt="Satu Perpus Logo" class="logo">
+            <nav class="menu">
+                <ul>
+                    <li><a href="../index.html">Beranda</a></li>
+                    <li><a href="transaksi.html">Transaksi</a></li>
+                    <li><a href="Data_buku.html">Data Buku</a></li>
+                    <li><a href="data_anggota.html">Data Anggota</a></li>
+                    <li><a href="data_pengunjung.html">Data Petugas</a></li>
+                </ul>
+            </nav>
+        </div>
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="content">
+                <h2 class="topofcontent">Tambah Data Anggota</h2>
+                <div class="center-container">
+                    <form>
+                        <div class="input-group">
+                            <label for="nama-anggota">
+                                    <span class="label-text">Nama Anggota</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="nama-anggota" name="nama-anggota" style="width: 417px;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="tempat-lahir">
+                                    <span class="label-text">Tempat Lahir</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="tempat-lahir" name="tempat-lahir" style="width: 417px;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="tanggal-lahir">
+                                    <span class="label-text">Tanggal Lahir</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <input type="date" id="tanggal-lahir" class="date-input" style="width: 417px;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="jenis-kelamin">
+                                    <span class="label-text">Jenis Kelamin</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <select id="jenis-kelamin" name="jenis-kelamin" style="width: 417px;">
+                                        <option value="Laki-laki">Laki-laki</option>
+                                        <option value="Perempuan">Perempuan</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="telepon">
+                                    <span class="label-text">Telepon</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <input type="tel" id="telepon" name="telepon" style="width: 417px;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="nik">
+                                    <span class="label-text">NIK</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="nik" name="nik" style="width: 417px;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="pekerjaan">
+                                    <span class="label-text">Pekerjaan</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="pekerjaan" name="pekerjaan" style="width: 417px;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="alamat">
+                                    <span class="label-text">Alamat</span>
+                                </label>
+                            <div class="input-wrapper">
+                                <textarea id="alamat" name="alamat" rows="4" style="width: 417px; height: 115px;"></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="flex gap-20 justify-end items-end pb-12">
+                    <button class="custom-button" type="submit" style="justify-content: center; width: 121px; height: 43px;">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
