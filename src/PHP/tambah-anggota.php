@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex  px-12 text-2xl font-semibold">
+        <div class="flex my-8 px-12 text-2xl font-semibold">
             <p>Tambah Anggota</p>
         </div>
         <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white ">
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
 
         anggota.addEventListener('click', () => {
-            window.location.href = 'data-anggota.html';
+            window.location.href = 'data-anggota.php';
         });
 
         pengunjung.addEventListener('click', () => {

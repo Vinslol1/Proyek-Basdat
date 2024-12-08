@@ -1,3 +1,23 @@
+<?php
+include 'connect.php';
+
+$limit = 10; // menampilkan 10 data(maximal di selectnya)
+if (isset($_POST['limit'])) {
+    $limit = $_POST['limit'];
+}
+$sql = "SELECT * FROM anggota";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+
+// nyimpen hasil query dalam array
+$anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$totalSql = "SELECT COUNT(*) as total FROM anggota";
+$totalStmt = $conn->prepare($totalSql);
+$totalStmt->execute();
+$totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,11 +53,11 @@
 
 <body class="bg-white flex flex-row font-sand w-screen min-h-screen">
     <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 w-1/6">
-        <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
+        <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
         </div>
-        <div class="flex flex-col w-full font-sand rounded-lg text-2xl text-white space-y-4 px-4">
+        <div class="flex flex-col w-full font-sand rounded-lg text-xl text-white space-y-2 px-4">
             <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
@@ -68,7 +88,7 @@
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex px-12 text-2xl font-semibold">
+        <div class="flex my-8 px-12 text-2xl font-semibold">
             <p>Data Anggota</p>
         </div>
         <button id="tambah-anggota" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
@@ -135,20 +155,26 @@
                     </tr>
                 </thead>                  
                     <tbody class="bg-abu1 border border-collapse border-abu1 overflow-y-scroll text-lg">
-                        <tr class="border-b ">
-                            <td class="px-4 py-2 text-center border border-right border-abu_border">1</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">B001</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">Belajar HTML</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">John Doe</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">2014</td>
-                            <td class="px-4 py-2 space-x-5 border border-right border-abu_border"> <i class="fi fi-tr-overview cursor-pointer"></i><i class="fi fi-tr-floppy-disk-pen cursor-pointer"></i><i class="fi fi-tr-trash-xmark cursor-pointer"></i></td>
+                    <?php foreach ($anggota as $index => $data) : ?>
+                        <tr class="border-b">
+                            <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $index + 1; ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $data['id']; ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $data['nama']; ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $data['telepon']; ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border">0</td>
+                            <td class="px-4 py-2 space-x-5 border border-right border-abu_border">
+                                <i class="fi fi-tr-overview cursor-pointer"></i>
+                                <i class="fi fi-tr-floppy-disk-pen cursor-pointer" onclick="window.location.href='update.php?id=<?= $data['id']; ?>'"></i>
+                                <i id="hapus-data" class="fi fi-tr-trash-xmark cursor-pointer"></i>
+                            </td>
                         </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
             <div id="akhir-tabel" class="flex flex-row justify-between items-center text-lg">
                 <div>
-                    <p>Menampilkan 0 dari 0 data</p>
+                    <p class="text-black">Menampilkan <?= $limit ?> dari <?= $totalData ?> data anggota</p>
                 </div>
                 <div class="text-white font-medium space-x-3">
                     <button id="tombol-kembali "class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">sebelumnya</button>
@@ -184,7 +210,7 @@
         });
 
         anggota.addEventListener('click', () => {
-            window.location.href = 'data-anggota.php';
+            window.location.href = 'data-anggota.html';
         });
 
         pengunjung.addEventListener('click', () => {
@@ -196,7 +222,7 @@
         });
 
         tambahAnggota.addEventListener('click', () => {
-            window.location.href = 'tambah-anggota.php';
+            window.location.href = 'tambah-anggota.html';
         });
     </script>    
 </body>
