@@ -14,7 +14,5 @@ $conn = pg_connect($conn_string);
 // Perika koneksi
 if (!$conn) {
     echo "Koneksi ke PostgreSQL gagal";
-} else {
-    echo "Koneksi berhasil";
-}
+} 
 ?>
