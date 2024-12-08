@@ -1,3 +1,46 @@
+<?php
+include 'connect.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nama = $_POST["nama-anggota"];
+    $tempat_lahir = $_POST["tempat-lahir"];
+    $tanggal_lahir = $_POST["tanggal-lahir"];
+    $jenis_kelamin = $_POST["jenis-kelamin"];
+    $telepon = $_POST["telepon"];
+    $nik = $_POST["nik"];
+    $pekerjaan = $_POST["pekerjaan"];
+    $alamat = $_POST["alamat"];
+    $member = true; 
+
+    try {
+        // buat masukin datanya ke tabel
+        $sql = "INSERT INTO anggota (nama, tempat_lahir, tanggal_lahir, jenis_kelamin, telepon, nik, alamat, member) 
+                VALUES (:nama, :tempat_lahir, :tanggal_lahir, :jenis_kelamin, :telepon, :nik, :alamat, :member)";
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindParam(':nama', $nama);
+        $stmt->bindParam(':tempat_lahir', $tempat_lahir);
+        $stmt->bindParam(':tanggal_lahir', $tanggal_lahir);
+        $stmt->bindParam(':jenis_kelamin', $jenis_kelamin);
+        $stmt->bindParam(':telepon', $telepon);
+        $stmt->bindParam(':nik', $nik);
+        $stmt->bindParam(':alamat', $alamat);
+        $stmt->bindParam(':member', $member, PDO::PARAM_BOOL);
+
+        if (empty($nama) || empty($tempat_lahir) || empty($tanggal_lahir) || empty($jenis_kelamin) || empty($telepon) || empty($nik) || empty($pekerjaan) || empty($alamat)) {
+            die("Semua field harus diisi!");
+        }
+        
+        $stmt->execute();
+        echo "<script>alert('Data anggota berhasil disimpan!'); window.location.href='data_anggota.php';</script>";
+
+    } 
+    catch (PDOException $e) {
+        echo "Terjadi kesalahan: " . $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,11 +71,11 @@
 
 <body class="bg-white flex flex-row font-sand w-screen min-h-screen">
     <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 w-1/6">
-        <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
+        <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
         </div>
-        <div class="flex flex-col w-full font-sand rounded-lg text-2xl text-white space-y-4 px-4">
+        <div class="flex flex-col w-full font-sand rounded-lg text-xl text-white space-y-2 px-4">
             <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
@@ -62,12 +105,11 @@
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-3xl font-semibold">
-            <p>Data Anggota</p>
+        <div class="flex  px-12 text-2xl font-semibold">
+            <p>Tambah Anggota</p>
         </div>
         <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white ">
-            <p class="font-bold text-2xl">Tambah Anggota</p>
-            <form class="space-y-6 text-xl p-6">
+            <form class="space-y-6 text-xl p-6" method="POST">
                 <div class="flex flex-row gap-8">
                     <label for="nama-anggota" class="block text-gray-700 font-bold md:w-1/6 text-right">Nama Anggota</label>
                     <input type="text" id="nama-anggota" name="nama-anggota" class="w-full border border-gray-300 rounded-md p-2 max-w-8xl">
@@ -101,13 +143,13 @@
                 </div>
                 <div class="flex flex-row gap-8">
                     <label for="alamat" class="block text-gray-700 font-bold md:w-1/6 text-right">Alamat</label>
-                    <textarea id="alamat" name="alamat" rows="4" class="w-full border border-gray-300 rounded-md p-2 max-w-8xl"></textarea>
+                    <textarea id="alamat" name="alamat" rows="4" class="w-full border border-gray-300 rounded-md p-2 max-w-8xl max-h-20"></textarea>
+                </div>
+                <div class="flex justify-end gap-4 mt-4 font-medium text-white text-xl">
+                    <button type="submit" id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Simpan</button>
                 </div>
             </form>
                 
-            <div class="flex justify-end gap-4 mt-4 font-medium text-white text-2xl">
-                <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Simpan</button>
-            </div>
         </div>
     </section>
 
@@ -147,6 +189,14 @@
         pengaturan.addEventListener('click', () => {
             window.location.href = 'pengaturan.html';
         });
+
+        document.getElementById("tombol-selanjutnya").addEventListener("click", function (event) {
+        const confirmSave = confirm("Apakah Anda yakin ingin menyimpan data?");
+        if (!confirmSave) {
+            event.preventDefault(); // Membatalkan submit form jika pengguna memilih 'Batal'
+        }
+        });
+
     </script>  
 </body>
 </html>
