@@ -1,0 +1,109 @@
+<!-- Dari Maisyah -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satu Perpus</title>
+    <style>
+        /* Reset dasar */
+        
+        body {
+            margin: 0;
+            font-family: "Quicksand", sans-serif;
+            height: 100vh;
+            background-color: #e8e4e4;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo svg {
+            width: 50px;
+            height: 50px;
+            fill: #2980b9;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        
+        .form-group input[type="password"] {
+            padding-right: 40px;
+        }
+        
+        .form-group .show-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        
+        .btn {
+            background-color: #2980b9;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease
+        }
+        
+        .btn:hover {
+            background-color: #1a6f9a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.93216 16.625C4.44555 16.625 4.02966 16.4551 3.6845 16.1152C3.33933 15.7742 3.16675 15.3657 3.16675 14.8897V4.14042C3.16675 3.65328 3.33933 3.23713 3.6845 2.89196C4.02966 2.54679 4.44555 2.37447 4.93216 2.375H13.1536V13.946H4.93216C4.66722 13.946 4.43869 14.037 4.24658 14.2191C4.05394 14.4012 3.95762 14.6247 3.95762 14.8897C3.95762 15.1541 4.05394 15.3776 4.24658 15.5602C4.43869 15.7423 4.66722 15.8333 4.93216 15.8333H15.0417V3.95833H15.8334V16.625H4.93216ZM4.93216 13.1543H12.3627V3.16667H4.93216C4.65719 3.16667 4.42603 3.26299 4.23866 3.45563C4.05183 3.64721 3.95841 3.87547 3.95841 4.14042V13.4742C4.10091 13.3839 4.25239 13.3079 4.41283 13.2462C4.57328 13.1844 4.74665 13.1535 4.93296 13.1535M5.84575 10.5038H6.49175L6.96041 9.24667H9.37975L9.84446 10.5038H10.4746L8.53346 5.32792H7.80275L5.84575 10.5038ZM7.17654 8.65292L8.17087 5.99133H8.18037L9.15887 8.65292H7.17654Z" fill="black"/>
+                
+                </svg>
+        </div>
+        <h2>Masuk</h2>
+        <form>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" placeholder="" required>
+
+            </div>
+            <button type="submit" class="btn">Masuk</button>
+        </form>
+    </div>
+</body>
+
+</html>
