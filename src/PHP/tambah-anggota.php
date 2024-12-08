@@ -175,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
 
         petugas.addEventListener('click', () => {
-            window.location.href = 'petugas.html';
+            window.location.href = 'data-petugas.html';
         });
 
         anggota.addEventListener('click', () => {
