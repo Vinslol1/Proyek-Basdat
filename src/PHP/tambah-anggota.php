@@ -91,12 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Data Anggota</p>
             </div>
-            <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Data Pengunjung</p>
-            </div>
-            <div id="sidebar-pengaturan" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Pengaturan</p>
-            </div>
         </div>        
     </section>
     <!-- main -->
@@ -105,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-2xl font-semibold">
+        <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Tambah Anggota</p>
         </div>
         <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white ">
@@ -159,11 +153,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const buku = document.getElementById('sidebar-buku');
         const petugas = document.getElementById('sidebar-petugas');
         const anggota = document.getElementById('sidebar-anggota');
-        const pengunjung = document.getElementById('sidebar-pengunjung');
-        const pengaturan = document.getElementById('sidebar-pengaturan');
-        
         beranda.addEventListener('click', () => {
-            window.location.href = 'dasbor.html';
+            window.location.href = 'dasbor.php';
         });
 
         transaksi.addEventListener('click', () => {
@@ -182,18 +173,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             window.location.href = 'data-anggota.php';
         });
 
-        pengunjung.addEventListener('click', () => {
-            window.location.href = 'pengunjung.html';
-        });
-
-        pengaturan.addEventListener('click', () => {
-            window.location.href = 'pengaturan.html';
-        });
-
         document.getElementById("tombol-selanjutnya").addEventListener("click", function (event) {
         const confirmSave = confirm("Apakah Anda yakin ingin menyimpan data?");
         if (!confirmSave) {
-            event.preventDefault(); // Membatalkan submit form jika pengguna memilih 'Batal'
+            event.preventDefault(); // membatalkan submit form kalo pengguna memilih batal
         }
         });
 

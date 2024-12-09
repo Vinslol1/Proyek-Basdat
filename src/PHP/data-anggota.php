@@ -1,21 +1,43 @@
 <?php
-include 'connect.php';
+    include 'connect.php';
 
-$limit = 10; // menampilkan 10 data(maximal di selectnya)
-if (isset($_POST['limit'])) {
-    $limit = $_POST['limit'];
-}
-$sql = "SELECT * FROM anggota";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
+    $limit = 10; 
+    $search = ''; 
+    $whereClause = '';
 
-// nyimpen hasil query dalam array
-$anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // buat kalo ada input jumlah limit dari pengguna
+    if (isset($_POST['limit'])) {
+        $limit = (int)$_POST['limit'];
+    }
 
-$totalSql = "SELECT COUNT(*) as total FROM anggota";
-$totalStmt = $conn->prepare($totalSql);
-$totalStmt->execute();
-$totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+    // utk fitur cari data
+    if (isset($_POST['search']) && !empty(trim($_POST['search']))) {
+        $search = trim($_POST['search']);
+        $whereClause = "WHERE nama LIKE :search OR telepon LIKE :search";
+    }
+
+    // buat nampilkan total data
+    $totalSql = "SELECT COUNT(*) as total FROM anggota $whereClause";
+    $totalStmt = $conn->prepare($totalSql);
+
+    if (!empty($whereClause)) {
+        $totalStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    }
+
+    $totalStmt->execute();
+    $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $sql = "SELECT * FROM anggota $whereClause LIMIT :limit";
+    $stmt = $conn->prepare($sql);
+
+    // bind parameter untuk pencarian jika ada
+    if (!empty($whereClause)) {
+        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    }
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+    $stmt->execute();
+    $anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -73,12 +95,6 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
             <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Data Anggota</p>
             </div>
-            <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Data Pengunjung</p>
-            </div>
-            <div id="sidebar-pengaturan" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Pengaturan</p>
-            </div>
         </div>        
     </section>
 
@@ -88,7 +104,7 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-2xl font-semibold">
+        <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Data Anggota</p>
         </div>
         <button id="tambah-anggota" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
@@ -100,17 +116,21 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
             <div class="flex flex-row justify-between items-center p-4 rounded-t-lg">
                 <div class="flex flex-row items-center space-x-2 text-xl font-medium text-black opacity-75">
                     <span class="text-xl">Menampilkan</span>
-                    <select class="border border-solid border-black  px-2 py-2 rounded-md focus:outline-none">
-                        <option value="1">1</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                    </select>
-                    <span class="text-xl">Data</span>
+                    <form method="POST" class="flex items-center space-x-2">
+                        <select name="limit" class="border border-solid border-black px-2 py-2 rounded-md focus:outline-none" onchange="this.form.submit()">
+                            <option value="1" <?= $limit == 1 ? 'selected' : ''; ?>>1</option>
+                            <option value="5" <?= $limit == 5 ? 'selected' : ''; ?>>5</option>
+                            <option value="10" <?= $limit == 10 ? 'selected' : ''; ?>>10</option>
+                        </select>
+                        <span class="text-xl">Data</span>
+                    </form>
                 </div>
-                <div class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
-                    <input type="text" class="bg-transparent border-none focus:outline-none" placeholder="cari">
-                    <i class="fi fi-rr-search"></i>
-                </div>
+                <form method="POST" class="flex flex-row items-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
+                    <input type="text" name="search" value="<?= htmlspecialchars($search); ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari anggota...">
+                    <button type="submit">
+                        <i class="fi fi-rr-search"></i>
+                    </button>
+                </form>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full table-auto">
@@ -173,14 +193,19 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
                 </table>
             </div>
             <div id="akhir-tabel" class="flex flex-row justify-between items-center text-lg">
-                <div>
-                    <p class="text-black">Menampilkan <?= $limit ?> dari <?= $totalData ?> data anggota</p>
-                </div>
-                <div class="text-white font-medium space-x-3">
-                    <button id="tombol-kembali "class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">sebelumnya</button>
-                    <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Selanjutnya</button>
-                </div>
+                <?php if (empty($anggota)) : ?>
+                    <p class="text-red-600">Tidak ada data yang cocok dengan pencarian.</p>
+                <?php else : ?>
+                    <div>
+                        <p class="text-black">Menampilkan <?= count($anggota) ?> dari <?= $totalData ?> data anggota</p>
+                    </div>
+                    <div class="text-white font-medium space-x-3">
+                        <button id="tombol-kembali" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">sebelumnya</button>
+                        <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Selanjutnya</button>
+                    </div>
+                <?php endif; ?>
             </div>
+
         </div>
     </section>
     <script>
@@ -189,12 +214,10 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
         const buku = document.getElementById('sidebar-buku');
         const petugas = document.getElementById('sidebar-petugas');
         const anggota = document.getElementById('sidebar-anggota');
-        const pengunjung = document.getElementById('sidebar-pengunjung');
-        const pengaturan = document.getElementById('sidebar-pengaturan');
         const tambahAnggota = document.getElementById('tambah-anggota');
         
         beranda.addEventListener('click', () => {
-            window.location.href = 'dasbor.html';
+            window.location.href = 'dasbor.php';
         });
 
         transaksi.addEventListener('click', () => {
@@ -210,19 +233,11 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
         });
 
         anggota.addEventListener('click', () => {
-            window.location.href = 'data-anggota.html';
-        });
-
-        pengunjung.addEventListener('click', () => {
-            window.location.href = 'pengunjung.html';
-        });
-
-        pengaturan.addEventListener('click', () => {
-            window.location.href = 'pengaturan.html';
+            window.location.href = 'data-anggota.php';
         });
 
         tambahAnggota.addEventListener('click', () => {
-            window.location.href = 'tambah-anggota.html';
+            window.location.href = 'tambah-anggota.php';
         });
     </script>    
 </body>
