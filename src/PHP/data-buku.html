@@ -72,7 +72,7 @@
         <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Data Buku</p>
         </div>
-        <button class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+        <button id="tambah_buku" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
             <i class="fi fi-tr-add flex justify-center"></i>
             <p>Tambah Buku</p>
         </button>
@@ -171,42 +171,12 @@
             </div>
         </div>
     </section>
+    <script src="../js/asidehref.js"> </script>    
     <script>
-        const beranda = document.getElementById('sidebar-beranda');
-        const transaksi = document.getElementById('sidebar-transaksi');
-        const buku = document.getElementById('sidebar-buku');
-        const petugas = document.getElementById('sidebar-petugas');
-        const anggota = document.getElementById('sidebar-anggota');
-        const pengunjung = document.getElementById('sidebar-pengunjung');
-        const pengaturan = document.getElementById('sidebar-pengaturan');
-        
-        beranda.addEventListener('click', () => {
-            window.location.href = 'dasbor.html';
+        tambah_buku = document.getElementById('tambah_buku');
+        tambah_buku.addEventListener('click', () => {
+            window.location.href = 'tambah_buku.html';    
         });
-
-        transaksi.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';
-        });
-
-        buku.addEventListener('click', () => {
-            window.location.href = 'data-buku.html';
-        });
-
-        petugas.addEventListener('click', () => {
-            window.location.href = 'data-petugas.html';
-        });
-
-        anggota.addEventListener('click', () => {
-            window.location.href = 'data-anggota.html';
-        });
-
-        pengunjung.addEventListener('click', () => {
-            window.location.href = 'pengunjung.html';
-        });
-
-        pengaturan.addEventListener('click', () => {
-            window.location.href = 'pengaturan.html';
-        });
-    </script>    
+    </script>
 </body>
 </html>

@@ -146,33 +146,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
         </div>
     </section>
-
+    <script src="../js/asidehref.js"></script>
     <script>
-        const beranda = document.getElementById('sidebar-beranda');
-        const transaksi = document.getElementById('sidebar-transaksi');
-        const buku = document.getElementById('sidebar-buku');
-        const petugas = document.getElementById('sidebar-petugas');
-        const anggota = document.getElementById('sidebar-anggota');
-        beranda.addEventListener('click', () => {
-            window.location.href = 'dasbor.php';
-        });
-
-        transaksi.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';
-        });
-
-        buku.addEventListener('click', () => {
-            window.location.href = 'data-buku.html';
-        });
-
-        petugas.addEventListener('click', () => {
-            window.location.href = 'data-petugas.html';
-        });
-
-        anggota.addEventListener('click', () => {
-            window.location.href = 'data-anggota.php';
-        });
-
         document.getElementById("tombol-selanjutnya").addEventListener("click", function (event) {
         const confirmSave = confirm("Apakah Anda yakin ingin menyimpan data?");
         if (!confirmSave) {
