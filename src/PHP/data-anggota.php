@@ -31,7 +31,6 @@ $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <style>
     #icon-logo {
         font-size: 2.5rem; 
