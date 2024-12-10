@@ -31,8 +31,8 @@
     }
   </style>
 </head>
-<body class="bg-white flex flex-row h-screen font-sand w-screen">
-    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 h-screen w-1/6">
+<body class="bg-white flex flex-row font-sand">
+    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 w-1/6">
         <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
@@ -61,7 +61,7 @@
             </div>
         </div>        
     </section>
-    <section class="flex flex-col bg-abu2 w-full">
+    <section class="flex flex-col bg-abu2 p-4 w-screen">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
@@ -71,71 +71,73 @@
         </div>
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
             <div>
-                <div class="flex flex-row">
+                <div class="flex border-b-2 p-2 gap-5">
                     <img src="../../img/Group.svg" alt="Informasi Pustaka">
                     <h2 class="text-2xl font-bold">Informasi Peminjaman</h2>
                 </div>
-                <table>
+                <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="left-column">Nomor Peminjaman</td>
-                      <td>#2023</td>
+                      <td class="bg-abu1 font-bold w-1/2">Nomor Peminjaman</td>
+                      <td class="bg-abu1">#2023</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Nomor Buku</td>
+                      <td class="font-bold w-1/2">Nomor Buku</td>
                       <td>324452</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Judul</td>
-                      <td>Cara Belajar Dengan Benar</td>
+                      <td class="bg-abu1 font-bold w-1/2">Judul</td>
+                      <td class="bg-abu1">Cara Belajar Dengan Benar</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Nomor Anggota</td>
+                      <td class="font-bold w-1/2">Nomor Anggota</td>
                       <td>39284</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Nama</td>
-                      <td>Parul</td>
+                      <td class="bg-abu1 font-bold w-1/2">Nama</td>
+                      <td class="bg-abu1">Parul</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Tanggal Pinjam</td>
+                      <td class="font-bold w-1/2">Tanggal Pinjam</td>
                       <td>02/02/2024</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Batas Pengembalian</td>
-                      <td>12/02/2024</td>
+                      <td class="bg-abu1 font-bold w-1/2">Batas Pengembalian</td>
+                      <td class="bg-abu1">12/02/2024</td>
                     </tr>
                   </table>
         </div>
             <div>
-                <div>
-                    <img src="../../img/Group.svg" alt="Informasi Pustaka">
-                    <h2>Informasi Pengembalian</h2>
+                <div class="flex justify-between border-b-2 p-2 mt-2">
+                    <div class="flex gap-5">
+                        <img src="../../img/Group.svg" alt="Informasi Pustaka">
+                        <h2 class="text-2xl font-bold">Informasi Pengembalian</h2>
+                    </div>
+                    <p class="text-left text-xl font-medium">Nomor Anggota: </p>
                 </div>
-                <p>Nomor Anggota: </p>
-                <table>
+                <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="left-column">Admin</td>
-                      <td>#2839</td>
+                      <td class="bg-abu1 font-bold w-1/2">Admin</td>
+                      <td class="bg-abu1">#2839</td>
                     </tr>
                     <tr>
-                      <td class="left-column">NIP</td>
+                      <td class="font-bold w-1/2">NIP</td>
                       <td>23200240023</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Tanggal Kembali</td>
-                      <td>10/02/2024</td>
+                      <td class="bg-abu1 font-bold w-1/2">Tanggal Kembali</td>
+                      <td class="bg-abu1">10/02/2024</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Keterlambatan</td>
+                      <td class="font-bold w-1/2">Keterlambatan</td>
                       <td>Tidak</td>
                     </tr>
                 </table>
         </div>
             <div class="flex flex-row-reverse p-1">
-                <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+                <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
                     <p>Data Sudah Benar</p>
                 </button>
-                <button id="kembali-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+                <button id="kembali-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
                     <p>Kembali</p>
                 </button>
             </div>

@@ -31,8 +31,8 @@
     }
   </style>
 </head>
-<body class="bg-white flex flex-row h-screen font-sand w-screen">
-    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 h-screen w-1/6">
+<body class="bg-white flex flex-row font-sand">
+    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 w-1/6">
         <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
@@ -61,7 +61,7 @@
             </div>
         </div>        
     </section>
-    <section class="flex flex-col bg-abu2 w-full">
+    <section class="flex flex-col bg-abu2 p-4 w-screen">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
@@ -71,104 +71,110 @@
         </div>
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
             <div>
-                <div class="flex flex-row">
+                <div class="flex justify-between border-b-2 p-2">
+                  <div class="flex gap-5">
                     <img src="../../img/Group.svg" alt="Informasi Pustaka">
                     <h2 class="text-2xl font-bold">Informasi Pustaka</h2>
-                    <p class="text-left">Nomor Pustaka</p>
+                  </div>
+                    <p class="text-left text-xl font-medium">Nomor Pustaka</p>
                 </div>
-                <table>
+                <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="left-column">Nomor Pustaka</td>
-                      <td>#2</td>
+                      <td class="bg-abu1 font-bold w-1/2">Nomor Pustaka</td>
+                      <td class="bg-abu1">#2</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Judul</td>
+                      <td class="font-bold w-1/2">Judul</td>
                       <td>Ayamku</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Kategori</td>
-                      <td>IPA</td>
+                      <td class="font-bold bg-abu1 w-1/2">Kategori</td>
+                      <td class="bg-abu1">IPA</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Pengarang</td>
+                      <td class="font-bold w-1/2">Pengarang</td>
                       <td>Caca</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Penerbit</td>
-                      <td>Parul</td>
+                      <td class="font-bold w-1/2 bg-abu1">Penerbit</td>
+                      <td class="bg-abu1">Parul</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Tahun</td>
+                      <td class="font-bold w-1/2">Tahun</td>
                       <td>2025</td>
                     </tr>
                     <tr>
-                      <td class="left-column">ISBN</td>
-                      <td>0198423843209</td>
+                      <td class="font-bold bg-abu1 w-1/2">ISBN</td>
+                      <td class="bg-abu1">0198423843209</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Klasifikasi</td>
+                      <td class="font-bold w-1/2">Klasifikasi</td>
                       <td>RA02</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Jumlah</td>
-                      <td>5</td>
+                      <td class="font-bold bg-abu1 w-1/2">Jumlah</td>
+                      <td class="bg-abu1">5</td>
                     </tr>
                   </table>    
             </div>
             <div>
-                <div>
-                    <img src="../../img/Group.svg" alt="Informasi Pustaka">
-                    <h2>Informasi Peminjam</h2>
+              <div class="flex justify-between border-b-2 p-2 mt-2">
+                <div class="flex gap-5">
+                  <img src="../../img/Group.svg" alt="Informasi Pustaka">
+                  <h2 class="text-2xl font-bold">Informasi Peminjam</h2>
                 </div>
-                <p>Nomor Anggota: </p>
-                <table>
+                  <p class="text-left text-xl font-medium">Nomor Anggota</p>
+              </div>
+                <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="left-column">Nomor Anggota</td>
-                      <td>#2839</td>
+                      <td class="bg-abu1 font-bold w-1/2">Nomor Anggota</td>
+                      <td class="bg-abu1">#2839</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Nama</td>
+                      <td class="font-bold w-1/2">Nama</td>
                       <td>Clara</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Telepon</td>
-                      <td>029383749302</td>
+                      <td class="bg-abu1 font-bold w-1/2">Telepon</td>
+                      <td class="bg-abu1">029383749302</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Alamat</td>
+                      <td class="font-bold w-1/2">Alamat</td>
                       <td>Batam</td>
                     </tr>
                   </table>
             </div>
             <div>
-                <div>
+                <div class="flex justify-between border-b-2 p-2 mt-2">
+                  <div class="flex gap-5">
                     <img src="../../img/Group.svg" alt="Informasi Pustaka">
-                    <h2>Informasi Peminjaman</h2>
+                    <h2 class="text-2xl font-bold">Informasi Peminjaman</h2>
+                  </div>
                 </div>
-                <table>
+                <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="left-column">Admin</td>
-                      <td>Aska</td>
+                      <td class=" bg-abu1 font-bold w-1/2">Admin</td>
+                      <td class="bg-abu1">Aska</td>
                     </tr>
                     <tr>
-                      <td class="left-column">NIP</td>
+                      <td class="font-bold w-1/2">NIP</td>
                       <td>0866890875</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Tanggal Pinjam</td>
-                      <td>29/13/2009</td>
+                      <td class="bg-abu1 font-bold w-1/2">Tanggal Pinjam</td>
+                      <td class="bg-abu1">29/13/2009</td>
                     </tr>
                     <tr>
-                      <td class="left-column">Batas Pengembalian</td>
+                      <td class="font-bold w-1/2">Batas Pengembalian</td>
                       <td>09/30/2003</td>
                     </tr>
                   </table>
             </div>
-            <div class="flex flex-row-reverse p-1">
-                <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+            <div class="flex flex-row-reverse p-1 mt-4">
+                <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
                     <p>Data Sudah Benar</p>
                 </button>
-                <button id="kembali-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+                <button id="kembali-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
                     <p>Kembali</p>
                 </button>
             </div>
