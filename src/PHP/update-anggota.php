@@ -120,6 +120,37 @@ if (isset($_POST['update'])) {
     </section>
 
     <script>
+        const beranda = document.getElementById('sidebar-beranda');
+        const transaksi = document.getElementById('sidebar-transaksi');
+        const buku = document.getElementById('sidebar-buku');
+        const petugas = document.getElementById('sidebar-petugas');
+        const anggota = document.getElementById('sidebar-anggota');
+        const tambahAnggota = document.getElementById('tambah-anggota');
+        
+        beranda.addEventListener('click', () => {
+            window.location.href = 'dasbor.php';
+        });
+
+        transaksi.addEventListener('click', () => {
+            window.location.href = 'transaksi.html';
+        });
+
+        buku.addEventListener('click', () => {
+            window.location.href = 'data-buku.html';
+        });
+
+        petugas.addEventListener('click', () => {
+            window.location.href = 'data-petugas.html';
+        });
+
+        anggota.addEventListener('click', () => {
+            window.location.href = 'data-anggota.php';
+        });
+
+        tambahAnggota.addEventListener('click', () => {
+            window.location.href = 'tambah-anggota.php';
+        });
+        
         const tombolKembali = document.getElementById('tombol-kembali');
         tombolKembali.addEventListener('click', () => {
             window.history.back();
