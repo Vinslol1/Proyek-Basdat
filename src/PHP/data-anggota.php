@@ -183,9 +183,8 @@
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $data['telepon']; ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border">0</td>
                             <td class="px-4 py-2 space-x-5 border border-right border-abu_border">
-                                <i class="fi fi-tr-overview cursor-pointer"></i>
-                                <i class="fi fi-tr-floppy-disk-pen cursor-pointer" onclick="window.location.href='update.php?id=<?= $data['id']; ?>'"></i>
-                                <i id="hapus-data" class="fi fi-tr-trash-xmark cursor-pointer"></i>
+                                <i class="fi fi-tr-floppy-disk-pen cursor-pointer" onclick="window.location.href='update-anggota.php?id=<?= $data['id']; ?>'"></i>
+                                <i class="fi fi-tr-trash-xmark cursor-pointer" data-id="<?= $data['id']; ?>" onclick="confirmDelete(this)"></i>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -239,6 +238,15 @@
         tambahAnggota.addEventListener('click', () => {
             window.location.href = 'tambah-anggota.php';
         });
+
+        function confirmDelete(element) {
+            const id = element.getAttribute('data-id');
+            const confirmed = confirm("Apakah Anda yakin ingin menghapus data anggota dengan ID " + id + "?");
+            if (confirmed) {
+                window.location.href = 'delete-anggota.php?id=' + id;
+            }
+        }
+
     </script>    
 </body>
 </html>
