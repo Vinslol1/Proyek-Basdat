@@ -71,7 +71,7 @@ $counter = $startLimit + 1;
   </style>
 </head>
 <body class="bg-white flex flex-row h-screen font-sand w-screen">
-    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 w-1/6 h-screen">
+    <section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
         <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
@@ -92,15 +92,9 @@ $counter = $startLimit + 1;
             <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Anggota</p>
             </div>
-            <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Data Pengunjung</p>
-            </div>
-            <div id="sidebar-pengaturan" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Pengaturan</p>
-            </div>
         </div>        
     </section>
-    <section class="flex flex-col bg-abu2 w-full">
+    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
@@ -108,7 +102,7 @@ $counter = $startLimit + 1;
         <div class="flex my-4 px-12 text-2xl font-semibold">
             <p>Data Buku</p>
         </div>
-        <button id="tambah-anggota" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+        <button id="tambah-buku" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
             <i class="fi fi-tr-add flex justify-center"></i>
             <p>Tambah Buku</p>
         </button>
@@ -195,7 +189,7 @@ $counter = $startLimit + 1;
                         echo '<td class="px-4 py-2 border border-abu_border w-[10%]">' . htmlspecialchars($row['kategori']) . '</td>';
                         echo '<td class="px-4 py-2 border border-abu_border w-[10%]">' . htmlspecialchars($row['stok']) . '</td>';
                         echo '<td class="px-4 py-2 text-center border border-abu_border w-[10%] space-x-7">
-                                <i class="fi fi-tr-floppy-disk-pen cursor-pointer" aria-label="Edit"></i>
+                                <a href="edit-buku.php?isbn=' . htmlspecialchars($row['isbn']) . '"><i class="fi fi-tr-floppy-disk-pen cursor-pointer" aria-label="Edit"></i></a>
                                 <i class="fi fi-tr-trash-xmark cursor-pointer" aria-label="Delete"></i>
                                 </td>';
                         echo '</tr>';
@@ -231,12 +225,16 @@ $counter = $startLimit + 1;
     </section>
     <script src="../js/asidehref.js"> </script>
     <script>
+        const tambahBuku = document.getElementById('tambah-buku');
         const edit = document.querySelectorAll('.fi-tr-floppy-disk-pen');
         const del = document.querySelectorAll('.fi-tr-trash-xmark');
         edit.forEach((e) => {
             e.addEventListener('click', () => {
                 window.location.href = 'edit-buku.php';
             });
+        });
+        tambahBuku.addEventListener('click', () => {
+            window.location.href = 'tambah-buku.php';
         });
         del.forEach((d) => {
             d.addEventListener('click', () => {

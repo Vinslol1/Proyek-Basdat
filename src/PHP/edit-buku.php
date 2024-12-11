@@ -1,121 +1,197 @@
-<?php 
+<?php
 include 'connect.php';
 
-// Periksa apakah form sudah disubmit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari form
-    $isbn = $_POST['isbn'];
+// Pastikan ISBN buku yang akan diupdate tersedia
+if (!isset($_GET['isbn'])) {
+    die("ISBN buku tidak ditemukan.");
+}
+
+// Retrieve ISBN from the URL
+$isbn = $_GET['isbn'];
+
+// Query to get the book data
+$query = "SELECT * FROM buku WHERE isbn = :isbn";
+$stmt = $conn->prepare($query);
+$stmt->execute(['isbn' => $isbn]);
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// If no data is found for the given ISBN
+if (!$data) {
+    die("Data buku tidak ditemukan.");
+}
+
+// Proses update data jika form di-submit
+if (isset($_POST['update'])) {
     $judul = $_POST['judul'];
     $pengarang = $_POST['pengarang'];
     $penerbit = $_POST['penerbit'];
-    $tahun = $_POST['tahun-terbit'];
-    $kota = $_POST['kota-terbit'];
-    $kategori = $_POST['genre'];
+    $tahun = $_POST['tahun'];
+    $kota = $_POST['kota'];
+    $kategori = $_POST['kategori'];
     $harga = $_POST['harga'];
     $stok = $_POST['stok'];
 
-    // Validasi sederhana
-    if (empty($isbn) || empty($judul) || empty($pengarang) || empty($penerbit) || empty($tahun) || empty($kota) || empty($kategori) || empty($harga) || empty($stok)) {
-        echo "<script>alert('Harap isi semua bidang!'); window.history.back();</script>";
-        exit;
-    }
+    // Update data buku
+    $updateQuery = "UPDATE buku SET judul = :judul, pengarang = :pengarang, penerbit = :penerbit, tahun_terbit = :tahun, kota_terbit = :kota, kategori = :kategori, harga = :harga, stok = :stok WHERE isbn = :isbn";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->execute([
+        'judul' => $judul,
+        'pengarang' => $pengarang,
+        'penerbit' => $penerbit,
+        'tahun' => $tahun,
+        'kota' => $kota,
+        'kategori' => $kategori,
+        'harga' => $harga,
+        'stok' => $stok,
+        'isbn' => $isbn
+    ]);
 
-    // Query untuk mengupdate data buku
-    $sql = "UPDATE buku SET judul = ?, pengarang = ?, penerbit = ?, tahun_terbit = ?, kota_terbit = ?, kategori = ?, harga = ?, stok = ? WHERE isbn = ?";
-
-    // Gunakan prepared statement untuk keamanan
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(1, $judul);
-    $stmt->bindParam(2, $pengarang);
-    $stmt->bindParam(3, $penerbit);
-    $stmt->bindParam(4, $tahun);
-    $stmt->bindParam(5, $kota);
-    $stmt->bindParam(6, $kategori);
-    $stmt->bindParam(7, $harga);
-    $stmt->bindParam(8, $stok);
-    $stmt->bindParam(9, $isbn);
-
-    if ($stmt->execute()) {
-        echo "<script>alert('Buku berhasil diupdate!'); window.location.href = 'data-buku.html';</script>";
-    } else {
-        echo "<script>alert('Terjadi kesalahan: " . $conn->errorInfo()[2] . "'); window.history.back();</script>";
-    }
-}
-
-// Ambil data buku berdasarkan ISBN untuk ditampilkan di form edit
-if (isset($_GET['isbn'])) {
-    $isbn = $_GET['isbn'];
-    $sql = "SELECT * FROM buku WHERE isbn = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(1, $isbn);
-    $stmt->execute();
-    $buku = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$buku) {
-        echo "<script>alert('Buku tidak ditemukan!'); window.location.href = 'data-buku.html';</script>";
-        exit;
-    }
-} else {
-    echo "<script>alert('ISBN tidak disediakan!'); window.location.href = 'data-buku.html';</script>";
+    header("Location: data-buku.php?updated=1");
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Buku</title>
-    <link rel="stylesheet" href="../style/style2.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satu Perpus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../style/style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <style>
+    #icon-logo {
+        font-size: 2.5rem; 
+    }
+    #icon-profil {
+        font-size: 2.5rem; 
+    }
+    #isi-dasbor .fi {
+        font-size: 4rem;
+    }    
+    .active {
+        background-color: #003566;
+        border-radius: 0.375rem;
+    }
+  </style>
 </head>
-<body class="bg-white flex flex-row font-sand w-screen min-h-screen overflow-x-hidden">
-    <section class="flex flex-col bg-abu2 w-full">
-        <div class="flex my-8 px-12 text-2xl font-semibold">
-            <p>Edit Buku</p>
+<body class="bg-white flex flex-row font-sand w-screen overflow-x-hidden">
+    <section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
+        <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
+            <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
+            <span>SATU PERPUS</span>
         </div>
-        <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white">
+        <div class="flex flex-col w-full font-sand rounded-lg text-xl text-white space-y-2 px-4">
+            <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+                <p>Beranda</p>
+            </div>
+            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+                <p>Transaksi</p>
+            </div>
+            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+                <p>Data Buku</p>
+            </div>
+            <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+                <p>Data Petugas</p>
+            </div>
+            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+                <p>Data Anggota</p>
+            </div>
+        </div>        
+    </section>
+    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0">
+        <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
+            <span class="flex items-center text-2xl">aska skata</span>
+            <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
+        </div>
+        <div class="flex my-4 px-12 text-2xl font-semibold">
+            <p>Data Buku</p>
+        </div>
+        <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white ">
             <p class="font-bold text-2xl">Edit Buku</p>
-            <form method="POST" class="space-y-6 text-xl p-6">
-                <input type="hidden" name="isbn" value="<?php echo htmlspecialchars($buku['isbn']); ?>">
-                <div class="flex flex-row gap-8">
-                    <label for="judul-buku" class="block text-gray-700 font-bold md:w-1/6 text-right">Judul Buku</label>
-                    <input type="text" id="judul-buku" name="judul" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['judul']); ?>">
+            <form method="POST" class="flex flex-col space-y-4">
+                <input type="hidden" name="isbn" value="<?= htmlspecialchars($data['isbn']); ?>">
+                <div>
+                    <label for="judul" class="block text-xl font-medium text-gray-700">Judul:</label>
+                    <input type="text" id="judul" name="judul" value="<?= htmlspecialchars($data['judul']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="pengarang-buku" class="block text-gray-700 font-bold md:w-1/6 text-right">Pengarang</label>
-                    <input type="text" id="pengarang-buku" name="pengarang" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['pengarang']); ?>">
+                <div>
+                    <label for="pengarang" class="block text-xl font-medium text-gray-700">Pengarang:</label>
+                    <input type="text" id="pengarang" name="pengarang" value="<?= htmlspecialchars($data['pengarang']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="penerbit-buku" class="block text-gray-700 font-bold md:w-1/6 text-right">Penerbit</label>
-                    <input type="text" id="penerbit-buku" name="penerbit" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['penerbit']); ?>">
+                <div>
+                    <label for="penerbit" class="block text-xl font-medium text-gray-700">Penerbit:</label>
+                    <input type="text" id="penerbit" name="penerbit" value="<?= htmlspecialchars($data['penerbit']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="tahun-buku" class="block text-gray-700 font-bold md:w-1/6 text-right">Tahun Terbit</label>
-                    <input type="number" id="tahun-buku" name="tahun-terbit" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['tahun_terbit']); ?>">
+                <div>
+                    <label for="tahun" class="block text-xl font-medium text-gray-700">Tahun Terbit:</label>
+                    <input type="text" id="tahun" name="tahun" value="<?= htmlspecialchars($data['tahun_terbit']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="kota-terbit" class="block text-gray-700 font-bold md:w-1/6 text-right">Kota Terbit</label>
-                    <input type="text" id="kota-terbit" name="kota-terbit" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['kota_terbit']); ?>">
+                <div>
+                    <label for="kota" class="block text-xl font-medium text-gray-700">Kota Terbit:</label>
+                    <input type="text" id="kota" name="kota" value="<?= htmlspecialchars($data['kota_terbit']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="genre" class="block text-gray-700 font-bold md:w-1/6 text-right">Kategori</label>
-                    <input type="text" id="genre" name="genre" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['kategori']); ?>">
+                <div>
+                    <label for="kategori" class="block text-xl font-medium text-gray-700">Kategori:</label>
+                    <input type="text" id="kategori" name="kategori" value="<?= htmlspecialchars($data['kategori']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="harga-buku" class="block text-gray-700 font-bold md:w-1/6 text-right">Harga</label>
-                    <input type="number" id="harga-buku" name="harga" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['harga']); ?>">
+                <div>
+                    <label for="harga" class="block text-xl font-medium text-gray-700">Harga:</label>
+                    <input type="number" id="harga" name="harga" value="<?= htmlspecialchars($data['harga']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex flex-row gap-8">
-                    <label for="stok-buku" class="block text-gray-700 font-bold md:w-1/6 text-right">Jumlah</label>
-                    <input type="number" id="stok-buku" name="stok" class="w-full border border-gray-300 rounded-md p-2" value="<?php echo htmlspecialchars($buku['stok']); ?>">
+                <div>
+                    <label for="stok" class="block text-xl font-medium text-gray-700">Stok:</label>
+                    <input type="number" id="stok" name="stok" value="<?= htmlspecialchars($data['stok']); ?>" class="border border-solid border-gray-300 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="flex justify-end gap-4 mt-4 font-medium text-white text-xl">
-                    <button type="submit" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">Update</button>
+                <div class="text-white font-medium space-x-3 flex items-end justify-end">
+                    <button type="button" class="bg-gray-500 px-8 py-2 rounded-xl hover:opacity-80"" onclick="window.history.back()">Kembali</button>
+                    <button type="submit" name="update" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">Update</button>
                 </div>
             </form>
         </div>
     </section>
+
+    <script>
+        const beranda = document.getElementById('sidebar-beranda');
+        const transaksi = document.getElementById('sidebar-transaksi');
+        const buku = document.getElementById('sidebar-buku');
+        const petugas = document.getElementById('sidebar-petugas');
+        const anggota = document.getElementById('sidebar-buku');
+        const tambahbuku = document.getElementById('tambah-buku');
+        
+        beranda.addEventListener('click', () => {
+            window.location.href = 'dasbor.php';
+        });
+
+        transaksi.addEventListener('click', () => {
+            window.location.href = 'transaksi.html';
+        });
+
+        buku.addEventListener('click', () => {
+            window.location.href = 'data-buku.html';
+        });
+
+        petugas.addEventListener('click', () => {
+            window.location.href = 'data-petugas.html';
+        });
+
+        buku.addEventListener('click', () => {
+            window.location.href = 'data-buku.php';
+        });
+
+        tambahbuku.addEventListener('click', () => {
+            window.location.href = 'tambah-buku.php';
+        });
+        
+        const tombolKembali = document.getElementById('tombol-kembali');
+        tombolKembali.addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
 </body>
 </html>

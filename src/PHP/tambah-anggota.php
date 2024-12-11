@@ -154,7 +154,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             event.preventDefault(); // membatalkan submit form kalo pengguna memilih batal
         }
         });
-
     </script>  
 </body>
 </html>
