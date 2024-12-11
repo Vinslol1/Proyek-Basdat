@@ -198,7 +198,7 @@
                         <p class="text-black">Menampilkan <?= count($anggota) ?> dari <?= $totalData ?> data anggota</p>
                     </div>
                     <div class="text-white font-medium space-x-3">
-                        <button id="tombol-kembali" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">sebelumnya</button>
+                        <button id="tombol-kembali" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Sebelumnya</button>
                         <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Selanjutnya</button>
                     </div>
                 <?php endif; ?>

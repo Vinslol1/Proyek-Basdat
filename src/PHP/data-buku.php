@@ -2,42 +2,40 @@
 // Include koneksi database
 include 'connect.php';
 
-// Logika sorting
-$orderBy = isset($_GET['orderBy']) ? $_GET['orderBy'] : 'isbn';
-$orderDir = isset($_GET['orderDir']) && $_GET['orderDir'] === 'desc' ? 'DESC' : 'ASC';
+// Variabel awal
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$orderBy = isset($_GET['orderBy']) && in_array($_GET['orderBy'], ['judul', 'pengarang', 'tahun_terbit', 'kategori', 'stok']) ? $_GET['orderBy'] : 'judul';
+$orderDir = isset($_GET['orderDir']) && $_GET['orderDir'] === 'DESC' ? 'DESC' : 'ASC';
+$selected_value = isset($_GET['data_count']) && in_array($_GET['data_count'], ['5', '10']) ? $_GET['data_count'] : '10';
+$currentPage = isset($_GET['page']) && ctype_digit($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// Logika pencarian
-$search = isset($_GET['search']) ? $_GET['search'] : '';
+$limit = (int)$selected_value;
+$startLimit = ($currentPage - 1) * $limit;
+$searchParam = "%" . $search . "%";
 
-// Query untuk menampilkan data dengan pencarian dan sorting
-$sql = "SELECT * FROM buku WHERE judul LIKE :search ORDER BY $orderBy $orderDir";
-$stmt = $conn->prepare($sql);
-$searchParam = "%$search%";
-$stmt->bindValue(':search', $searchParam);
-$stmt->execute();
-$result = $stmt->fetchAll();
+// Query menghitung total data
+$countQuery = $conn->prepare("SELECT COUNT(*) FROM buku WHERE judul LIKE :search");
+$countQuery->bindValue(':search', $searchParam, PDO::PARAM_STR);
+$countQuery->execute();
+$totalData = (int) $countQuery->fetchColumn();
 
-// Query untuk jumlah data
-$countSql = "SELECT COUNT(*) AS total FROM buku WHERE judul LIKE :search";
-$countStmt = $conn->prepare($countSql);
-$countStmt->bindValue(':search', $searchParam);
-$countStmt->execute();
-$totalData = $countStmt->fetch()['total'];
-
-// Ambil jumlah data yang dipilih dari query string atau setel default ke 5
-$selected_value = isset($_GET['data_count']) ? (int) $_GET['data_count'] : 5;
-// Menentukan halaman saat ini (default 1 jika tidak ada)
-$currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$startLimit = ($currentPage - 1) * $selected_value; // Menentukan offset berdasarkan halaman saat ini
-
-// Query untuk menampilkan data dengan pagination (limit dan offset)
+// Query data buku
 $sql = "SELECT * FROM buku WHERE judul LIKE :search ORDER BY $orderBy $orderDir LIMIT :limit OFFSET :offset";
 $stmt = $conn->prepare($sql);
-$stmt->bindValue(':search', $searchParam);
-$stmt->bindValue(':limit', $selected_value, PDO::PARAM_INT);
+$stmt->bindValue(':search', $searchParam, PDO::PARAM_STR);
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $startLimit, PDO::PARAM_INT);
 $stmt->execute();
-$result = $stmt->fetchAll();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Total halaman
+$totalPages = ceil($totalData / $limit);
+
+// Navigasi halaman
+$previousPage = $currentPage > 1 ? $currentPage - 1 : null;
+$nextPage = $currentPage < $totalPages ? $currentPage + 1 : null;
+
+$counter = $startLimit + 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,31 +68,6 @@ $result = $stmt->fetchAll();
     #akhir-tabel{
         margin-top: 3rem;
     }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    thead, tbody {
-        display: block;
-    }
-
-    tbody {
-        max-height: 400px;
-        overflow-y: auto;
-    }
-    thead {
-        background-color: #f2f2f2; /* Ganti dengan warna yang sesuai */
-    }
-
-    tbody tr {
-        display: table; /* Pastikan baris dalam tbody ditampilkan sebagai tabel */
-        width: 100%; /* Pastikan baris mengambil lebar penuh */
-    }
-    tbody th {
-        display: table; /* Pastikan baris dalam tbody ditampilkan sebagai tabel */
-        width: 100%; /* Pastikan baris mengambil lebar penuh */
-    }
   </style>
 </head>
 <body class="bg-white flex flex-row h-screen font-sand w-screen">
@@ -110,13 +83,13 @@ $result = $stmt->fetchAll();
             <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Transaksi</p>
             </div>
-            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Data Buku</p>
             </div>
             <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Petugas</p>
             </div>
-            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Anggota</p>
             </div>
             <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
@@ -132,7 +105,7 @@ $result = $stmt->fetchAll();
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-2xl font-semibold">
+        <div class="flex my-4 px-12 text-2xl font-semibold">
             <p>Data Buku</p>
         </div>
         <button id="tambah-anggota" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
@@ -145,30 +118,26 @@ $result = $stmt->fetchAll();
             <div class="flex flex-row items-center space-x-2 text-xl font-medium text-black opacity-75">
                 <span class="text-xl">Menampilkan</span>
                 <form method="GET" action="">
-                    <select 
-                        name="data_count" 
-                        class="border border-solid border-black px-2 py-2 rounded-md focus:outline-none"
-                        onchange="this.form.submit()">
-                        <option value="5" <?= $selected_value === 5 ? 'selected' : '' ?>>5</option>
-                        <option value="10" <?= $selected_value === 10 ? 'selected' : '' ?>>10</option>
-                        <option value="15" <?= $selected_value === 15 ? 'selected' : '' ?>>15</option>
-                    </select>
+                <select name="data_count" onchange="this.form.submit()" class="px-2 py-1 border rounded">
+                    <option value="5" <?= $selected_value === '5' ? 'selected' : '' ?>>5</option>
+                    <option value="10" <?= $selected_value === '10' ? 'selected' : '' ?>>10</option>
+                </select>
                     <noscript>
                         <button type="submit" class="hidden">Submit</button>
                     </noscript>
                 </form>
                 <span class="text-xl">Data</span>
             </div>
-                <div class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
-                    <input type="text" class="bg-transparent border-none focus:outline-none" placeholder="cari">
-                    <i class="fi fi-rr-search"></i>
-                </div>
+            <form class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl" method="GET" action="">
+                    <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari judul buku">
+                    <button type="submit"><i class="fi fi-rr-search cursor-pointer"></i></button>
+                </form>
             </div>
             <div class="w-full">
-            <table class="border-collapse table-auto">
+            <table class="border-collapse table-auto w-full">
                 <thead class="bg-white">
                     <tr class="text-gray-600 font-medium text-xl">
-                        <th class="px-4 py-2 border border-abu_border">
+                        <th class="px-4 py-2 border border-abu_border text-center">
                             <span>#</span>
                         </th>
                         <th class="px-4 py-2 border border-abu_border w-auto">
@@ -214,9 +183,9 @@ $result = $stmt->fetchAll();
                     </tr>
                 </thead>
                 <tbody class="bg-abu1">
-                    <?php
-                    $counter = 1;
-                    foreach ($result as $row) {
+                    <?php if ($result): ?>
+                        <?php foreach ($result as $row): ?>
+                        <?php
                         echo '<tr>';
                         echo '<td class="px-4 py-2 text-center border border-abu_border w-[5%]">' . $counter++ . '</td>';
                         echo '<td class="px-4 py-2 border border-abu_border w-[15%]">' . htmlspecialchars($row['isbn']) . '</td>';
@@ -225,14 +194,18 @@ $result = $stmt->fetchAll();
                         echo '<td class="px-4 py-2 border border-abu_border w-[10%]">' . htmlspecialchars($row['tahun_terbit']) . '</td>';
                         echo '<td class="px-4 py-2 border border-abu_border w-[10%]">' . htmlspecialchars($row['kategori']) . '</td>';
                         echo '<td class="px-4 py-2 border border-abu_border w-[10%]">' . htmlspecialchars($row['stok']) . '</td>';
-                        echo '<td class="px-4 py-2 text-center border border-abu_border w-[10%]">
-                                <i class="fi fi-tr-overview cursor-pointer" aria-label="View"></i>
+                        echo '<td class="px-4 py-2 text-center border border-abu_border w-[10%] space-x-7">
                                 <i class="fi fi-tr-floppy-disk-pen cursor-pointer" aria-label="Edit"></i>
                                 <i class="fi fi-tr-trash-xmark cursor-pointer" aria-label="Delete"></i>
-                            </td>';
+                                </td>';
                         echo '</tr>';
-                    }
-                    ?>
+                        ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                        <td colspan="8" class="text-center text-gray-500 px-4 py-2">Tidak ada data ditemukan</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
             </div>
@@ -245,48 +218,30 @@ $result = $stmt->fetchAll();
                         data
                     </p>
                 </div>
-                <div class="text-white font-medium space-x-3">
-                    <button id="tombol-kembali "class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Sebelumnya</button>
-                    <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Selanjutnya</button>
+                <div class="space-x-2">
+                    <?php if ($currentPage > 1): ?>
+                        <a href="?page=<?= $currentPage - 1 ?>&data_count=<?= $selected_value ?>&search=<?= $search ?>&orderBy=<?= $orderBy ?>&orderDir=<?= $orderDir ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Sebelumnya</a>
+                    <?php endif; ?>
+                    <?php if ($currentPage < $totalPages): ?>
+                        <a href="?page=<?= $currentPage + 1 ?>&data_count=<?= $selected_value ?>&search=<?= $search ?>&orderBy=<?= $orderBy ?>&orderDir=<?= $orderDir ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Selanjutnya</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </section>
+    <script src="../js/asidehref.js"> </script>
     <script>
-        const beranda = document.getElementById('sidebar-beranda');
-        const transaksi = document.getElementById('sidebar-transaksi');
-        const buku = document.getElementById('sidebar-buku');
-        const petugas = document.getElementById('sidebar-petugas');
-        const anggota = document.getElementById('sidebar-anggota');
-        const pengunjung = document.getElementById('sidebar-pengunjung');
-        const pengaturan = document.getElementById('sidebar-pengaturan');
-        
-        beranda.addEventListener('click', () => {
-            window.location.href = 'dasbor.html';
+        const edit = document.querySelectorAll('.fi-tr-floppy-disk-pen');
+        const del = document.querySelectorAll('.fi-tr-trash-xmark');
+        edit.forEach((e) => {
+            e.addEventListener('click', () => {
+                window.location.href = 'edit-buku.php';
+            });
         });
-
-        transaksi.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';
-        });
-
-        buku.addEventListener('click', () => {
-            window.location.href = 'data-buku.html';
-        });
-
-        petugas.addEventListener('click', () => {
-            window.location.href = 'data-petugas.html';
-        });
-
-        anggota.addEventListener('click', () => {
-            window.location.href = 'data-anggota.html';
-        });
-
-        pengunjung.addEventListener('click', () => {
-            window.location.href = 'pengunjung.html';
-        });
-
-        pengaturan.addEventListener('click', () => {
-            window.location.href = 'pengaturan.html';
+        del.forEach((d) => {
+            d.addEventListener('click', () => {
+                window.location.href = 'delete-buku.php';
+            });
         });
     </script>    
 </body>
