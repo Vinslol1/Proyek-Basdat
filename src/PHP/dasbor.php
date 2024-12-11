@@ -1,7 +1,6 @@
 <?php 
     include 'connect.php';
 
-    
     $totalAnggota = 0;
     $totalBuku = 0;
 
