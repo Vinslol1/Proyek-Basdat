@@ -1,18 +1,24 @@
 <?php 
     include 'connect.php';
 
+    
     $totalAnggota = 0;
-    try {
-        // untuk ngitung total anggota
-        $query = "SELECT COUNT(*) AS total FROM anggota";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $totalBuku = 0;
 
-        // di simpan ke variabel
-        $totalAnggota = $result['total'];
+    try {
+        $queryAnggota = "SELECT COUNT(*) AS total FROM anggota";
+        $stmtAnggota = $conn->prepare($queryAnggota);
+        $stmtAnggota->execute();
+        $resultAnggota = $stmtAnggota->fetch(PDO::FETCH_ASSOC);
+        $totalAnggota = $resultAnggota['total'];
+
+        $queryBuku = "SELECT COUNT(*) AS total FROM buku";
+        $stmtBuku = $conn->prepare($queryBuku);
+        $stmtBuku->execute();
+        $resultBuku = $stmtBuku->fetch(PDO::FETCH_ASSOC);
+        $totalBuku = $resultBuku['total'];
     } 
-    catch (PDOException $e){
+    catch (PDOException $e) {
         $error = "Error: " . $e->getMessage();
     }
 ?>
@@ -84,7 +90,7 @@
             <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 w-2/3 space-x-10">
                 <i class="fi fi-tr-users-alt"></i>
                 <div class="flex flex-col w-1/2">
-                    <p class="flex justify-center text-2xl">Anggota</p>
+                    <p class="flex justify-center text-xl">Anggota</p>
                     <p id="total-anggota" class="flex justify-center text-2xl font-semibold">
                         <?= htmlspecialchars($totalAnggota); ?>
                     </p>
@@ -93,35 +99,35 @@
             <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
                 <i class="fi fi-ts-book-arrow-up"></i>
                 <div class="flex flex-col w-1/2">
-                    <p class="flex justify-center text-2xl">Peminjaman</p>
+                    <p class="flex justify-center text-xl">Peminjaman</p>
                     <p class="flex text-2xl font-semibold justify-center">1</p>
                 </div>
             </div>
             <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3">
                 <i class="fi fi-tr-restock"></i>
                 <div class="flex flex-col w-1/2">
-                    <p class="flex justify-center text-2xl">Pengembalian</p>
+                    <p class="flex justify-center text-xl">Pengembalian</p>
                     <p class="flex justify-center text-2xl font-semibold">1</p>
                 </div>
             </div>
             <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
                 <i class="fi fi-tr-books"></i>
                 <div class="flex flex-col w-1/2">
-                    <p class="flex justify-center text-2xl">Total Buku</p>
-                    <p class="flex justify-center text-2xl font-semibold">1</p>
+                    <p class="flex justify-center text-xl">Total Buku</p>
+                    <p class="flex justify-center text-2xl font-semibold"><?= htmlspecialchars($totalBuku); ?></p>
                 </div>
             </div>
             <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
                 <i class="fi fi-tr-book-open-cover"></i>
                 <div class="flex flex-col w-1/2">
-                    <p class="flex justify-center text-2xl">Buku Tersedia</p>
+                    <p class="flex justify-center text-xl">Buku Tersedia</p>
                     <p class="flex justify-center text-2xl font-semibold">1</p>
                 </div>
             </div>
             <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
                 <i class="fi fi-tr-money-check-edit"></i>
                 <div class="flex flex-col w-1/2">
-                    <p class="flex justify-center text-2xl">Denda</p>
+                    <p class="flex justify-center text-xl">Denda</p>
                     <p class="flex justify-center text-2xl font-semibold">1</p>
                 </div>
             </div>
