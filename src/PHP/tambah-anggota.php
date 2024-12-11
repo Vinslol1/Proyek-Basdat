@@ -31,8 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Semua field harus diisi!");
         }
         
-        $stmt->execute();
-        echo "<script>alert('Data anggota berhasil disimpan!'); window.location.href='data_anggota.php';</script>";
+        if ($stmt->execute()) {
+            // routing setelah berhasil menghapus data
+            header('Location: data-anggota.php');
+            exit();
+        } else {
+            echo "Terjadi kesalahan saat menghapus data.";
+        }
 
     } 
     catch (PDOException $e) {

@@ -1,44 +1,51 @@
 <?php
-    include 'connect.php';
+include 'connect.php';
 
-    $limit = 10; 
-    $search = ''; 
-    $whereClause = '';
+$limit = 10;
+$search = '';
+$orderBy = 'nama';
+$orderDir = 'ASC';
 
-    // buat kalo ada input jumlah limit dari pengguna
-    if (isset($_POST['limit'])) {
-        $limit = (int)$_POST['limit'];
-    }
+// Menangkap parameter sorting dan pencarian
+if (isset($_GET['orderBy']) && in_array($_GET['orderBy'], ['nama', 'alamat', 'telepon', 'tanggal_lahir'])) {
+    $orderBy = $_GET['orderBy'];
+}
+if (isset($_GET['orderDir']) && in_array($_GET['orderDir'], ['ASC', 'DESC'])) {
+    $orderDir = $_GET['orderDir'];
+}
+if (isset($_POST['search']) && !empty(trim($_POST['search']))) {
+    $search = trim($_POST['search']);
+}
+if (isset($_POST['limit'])) {
+    $limit = (int)$_POST['limit'];
+}
 
-    // utk fitur cari data
-    if (isset($_POST['search']) && !empty(trim($_POST['search']))) {
-        $search = trim($_POST['search']);
-        $whereClause = "WHERE nama LIKE :search OR telepon LIKE :search";
-    }
+// Membuat klausa WHERE untuk pencarian
+$whereClause = '';
+if (!empty($search)) {
+    $whereClause = "WHERE nama LIKE :search OR telepon LIKE :search";
+}
 
-    // buat nampilkan total data
-    $totalSql = "SELECT COUNT(*) as total FROM anggota $whereClause";
-    $totalStmt = $conn->prepare($totalSql);
+// Query untuk total data
+$totalSql = "SELECT COUNT(*) as total FROM anggota $whereClause";
+$totalStmt = $conn->prepare($totalSql);
+if (!empty($search)) {
+    $totalStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+}
+$totalStmt->execute();
+$totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    if (!empty($whereClause)) {
-        $totalStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    }
-
-    $totalStmt->execute();
-    $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-    $sql = "SELECT * FROM anggota $whereClause LIMIT :limit";
-    $stmt = $conn->prepare($sql);
-
-    // bind parameter untuk pencarian jika ada
-    if (!empty($whereClause)) {
-        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    }
-    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-
-    $stmt->execute();
-    $anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Query untuk mengambil data
+$sql = "SELECT * FROM anggota $whereClause ORDER BY $orderBy $orderDir LIMIT :limit";
+$stmt = $conn->prepare($sql);
+if (!empty($search)) {
+    $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+}
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->execute();
+$anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +124,6 @@
                     <span class="text-xl">Menampilkan</span>
                     <form method="POST" class="flex items-center space-x-2">
                         <select name="limit" class="border border-solid border-black px-2 py-2 rounded-md focus:outline-none" onchange="this.form.submit()">
-                            <option value="1" <?= $limit == 1 ? 'selected' : ''; ?>>1</option>
                             <option value="5" <?= $limit == 5 ? 'selected' : ''; ?>>5</option>
                             <option value="10" <?= $limit == 10 ? 'selected' : ''; ?>>10</option>
                         </select>
@@ -138,7 +144,6 @@
                         <th class="px-4 py-2">
                             <div class="flex justify-between items-center">
                                 <span>#</span>
-                                <i class="fi fi-tr-sort-amount-down-alt cursor-pointer"></i>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
@@ -150,13 +155,14 @@
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span id="nama-anggota">Nama Anggota</span>
-                                <i class="fi fi-tr-sort-alt"></i>
+                                <a href="?orderBy=nama&orderDir=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC'; ?>">
+                                    <i class="fi fi-tr-sort-alt"></i>
+                                </a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span id="telepon">Telepon</span>
-                                <i class="fi fi-tr-sort-alt"></i>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
@@ -168,7 +174,6 @@
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Aksi</span>
-                                <i class="fi fi-tr-sort-alt"></i>
                             </div>
                         </th>
                     </tr>
