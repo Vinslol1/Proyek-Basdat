@@ -1,5 +1,28 @@
 <?php 
-    include 'connect.php';
+include 'connect.php';
+
+// Tampilkan data peminjaman yang ada
+$sql_peminjaman = "SELECT p.id, p.tanggal_pinjam, a.nama, b.judul 
+FROM peminjaman p
+JOIN anggota a ON p.id_anggota = a.id
+JOIN buku b ON p.isbn = b.isbn";
+
+$stmt_peminjaman = $conn->prepare($sql_peminjaman);
+$stmt_peminjaman->execute();
+
+// Tampilkan data peminjaman yang ada
+$sql_pengembalian = "SELECT p.id, p.tanggal_kembali, a.nama, b.judul 
+FROM pengembalian p
+JOIN anggota a ON p.id_anggota = a.id
+JOIN buku b ON p.isbn = b.isbn";
+
+$stmt_pengembalian = $conn->prepare($sql_peminjaman);
+$stmt_pengembalian->execute();
+
+$counter_peminjaman = 1;
+$counter_pengembalian = 1;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -45,10 +68,10 @@
             <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
-            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Transaksi</p>
             </div>
-            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Buku</p>
             </div>
             <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
@@ -106,8 +129,14 @@
                     <tr class="text-gray-600 font-medium text-xl">
                         <th class="px-4 py-2">
                             <div class="flex justify-between items-center">
-                                <span>#</span>
+                                <span>No</span>
                                 <i class="fi fi-tr-sort-amount-down-alt cursor-pointer"></i>
+                            </div>
+                        </th>
+                        <th class="px-4 py-2 border border-solid border-abu_border">
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <span>Tanggal Peminjaman</span>
+                                <i class="fi fi-tr-sort-alt"></i>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
@@ -118,52 +147,28 @@
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
+                                <span>Nama Anggota</span>
+                                <i class="fi fi-tr-sort-alt"></i>
+                            </div>
+                        </th>
+                        <th class="px-4 py-2 border border-solid border-abu_border">
+                            <div class="flex justify-between items-center cursor-pointer">
                                 <span>Judul Buku</span>
                                 <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Pengarang</span>
-                                <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Tahun</span>
-                                <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Kategori</span>
-                                <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center">
-                                <span>Stok</span>
-                                <i class="fi fi-tr-sort-alt cursor-pointer"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border w-12">
-                            <div class="flex justify-center items-center">
-                                <span>Aksi</span>
                             </div>
                         </th>
                     </tr>
                 </thead>                  
                     <tbody class="bg-abu1 border border-collapse border-abu1 overflow-y-scroll text-lg">
-                        <tr class="border-b ">
-                            <td class="px-4 py-2 text-center border border-right border-abu_border">1</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">B001</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">Belajar HTML</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">John Doe</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">2014</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">Novel</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">5</td>
-                            <td class="px-4 py-2 space-x-5 border border-right border-abu_border"> <i class="fi fi-tr-overview cursor-pointer"></i><i class="fi fi-tr-floppy-disk-pen cursor-pointer"></i><i class="fi fi-tr-trash-xmark cursor-pointer"></i></td>
+                        <?php while ($row = $stmt_peminjaman->fetch(PDO::FETCH_ASSOC)) { ?>
+                        <tr class="border-b">
+                            <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $counter_peminjaman ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['tanggal_pinjam'] ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['id'] ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['nama'] ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['judul'] ?></td>
                         </tr>
+                    <?php $counter_peminjaman++;} ?>
                     </tbody>
                 </table>
             </div>
@@ -200,8 +205,14 @@
                     <tr class="text-gray-600 font-medium text-xl">
                         <th class="px-4 py-2">
                             <div class="flex justify-between items-center">
-                                <span>#</span>
+                                <span>No</span>
                                 <i class="fi fi-tr-sort-amount-down-alt cursor-pointer"></i>
+                            </div>
+                        </th>
+                        <th class="px-4 py-2 border border-solid border-abu_border">
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <span>Tanggal Pengembalian</span>
+                                <i class="fi fi-tr-sort-alt"></i>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
@@ -212,52 +223,28 @@
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
+                                <span>Nama Anggota</span>
+                                <i class="fi fi-tr-sort-alt"></i>
+                            </div>
+                        </th>
+                        <th class="px-4 py-2 border border-solid border-abu_border">
+                            <div class="flex justify-between items-center cursor-pointer">
                                 <span>Judul Buku</span>
                                 <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Pengarang</span>
-                                <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Tahun</span>
-                                <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Kategori</span>
-                                <i class="fi fi-tr-sort-alt"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center">
-                                <span>Stok</span>
-                                <i class="fi fi-tr-sort-alt cursor-pointer"></i>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border w-12">
-                            <div class="flex justify-center items-center">
-                                <span>Aksi</span>
                             </div>
                         </th>
                     </tr>
                 </thead>                  
                     <tbody class="bg-abu1 border border-collapse border-abu1 overflow-y-scroll text-lg">
-                        <tr class="border-b ">
-                            <td class="px-4 py-2 text-center border border-right border-abu_border">1</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">B001</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">Belajar HTML</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">John Doe</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">2014</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">Novel</td>
-                            <td class="px-4 py-2 border border-right border-abu_border">5</td>
-                            <td class="px-4 py-2 space-x-5 border border-right border-abu_border"> <i class="fi fi-tr-overview cursor-pointer"></i><i class="fi fi-tr-floppy-disk-pen cursor-pointer"></i><i class="fi fi-tr-trash-xmark cursor-pointer"></i></td>
+                    <?php while ($row = $stmt_pengembalian->fetch(PDO::FETCH_ASSOC)) { ?>
+                        <tr class="border-b">
+                            <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $counter_pengembalian ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['tanggal_kembali'] ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['id'] ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['nama'] ?></td>
+                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['judul'] ?></td>
                         </tr>
+                    <?php $counter_pengembalian++;} ?>
                     </tbody>
                 </table>
             </div>
