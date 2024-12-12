@@ -9,7 +9,7 @@ beranda.addEventListener('click', () => {
 });
 
 transaksi.addEventListener('click', () => {
-    window.location.href = 'transaksi.html';
+    window.location.href = 'transaksi.php';
 });
 
 buku.addEventListener('click', () => {

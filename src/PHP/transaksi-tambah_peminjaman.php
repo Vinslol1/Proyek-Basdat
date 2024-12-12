@@ -63,8 +63,8 @@ if (isset($_POST['tambah_peminjaman'])) {
   </style>
 </head>
 <body class="bg-white flex flex-row h-screen font-sand w-screen">
-    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 h-screen w-1/6">
-        <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
+    <section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
+        <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
         </div>
@@ -92,7 +92,7 @@ if (isset($_POST['tambah_peminjaman'])) {
             </div>
         </div>        
     </section>
-    <section class="flex flex-col bg-abu2 w-full">
+    <section class="bg-white flex flex-row h-screen font-sand w-screen">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
@@ -100,7 +100,7 @@ if (isset($_POST['tambah_peminjaman'])) {
         <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Transaksi</p>
         </div>
-        <div id="error" class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-red-600 mb-4 hidden">
+        <div id="error" class="flex-col mx-12 p-4 rounded-lg shadow-md bg-red-600 mb-4 hidden">
             <p class="text-2xl font-bold text-white">Terjadi kesalahan. Silakan coba lagi.</p>
         </div>
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">

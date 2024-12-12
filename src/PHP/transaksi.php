@@ -1,23 +1,6 @@
 <?php 
 include 'connect.php';
 
-// // Tampilkan data peminjaman yang ada
-$sql_peminjaman = "SELECT p.id, p.tanggal_pinjam, a.nama, b.judul 
-FROM peminjaman p
-JOIN anggota a ON p.id_anggota = a.id
-JOIN buku b ON p.isbn = b.isbn";
-
-// $stmt_peminjaman = $conn->prepare($sql_peminjaman);
-// $stmt_peminjaman->execute();
-
-// // Tampilkan data peminjaman yang ada
-// $sql_pengembalian = "SELECT p.id, p.tanggal_kembali, a.nama, b.judul, p.denda
-// FROM pengembalian p
-// JOIN anggota a ON p.id_anggota = a.id
-// JOIN buku b ON p.isbn = b.isbn";
-
-// $stmt_pengembalian = $conn->prepare($sql_pengembalian);
-// $stmt_pengembalian->execute();
 
 $counter_pengembalian = 1;
 
@@ -141,8 +124,8 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
   </style>
 </head>
 <body class="bg-white flex flex-row h-screen font-sand w-screen">
-    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 h-screen w-1/6">
-        <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
+    <section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
+        <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
         </div>
@@ -170,7 +153,7 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
             </div>
         </div>        
     </section>
-    <section class="flex flex-col bg-abu2 w-full">
+    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0 overflow-x-hidden">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
