@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="flex my-4 px-12 text-2xl font-semibold">
             <p>Data Buku</p>
         </div>
-        <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white ">
+        <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white">
             <p class="font-bold text-2xl">Tambah Buku</p>
             <form class="space-y-6 text-xl p-6" method="POST" action="tambah-buku.php">
                 <div class="flex flex-row gap-8">

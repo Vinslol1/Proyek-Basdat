@@ -45,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,10 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Satu Perpus</title>
     <link rel="stylesheet" href="../style/style2.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <style>
     #icon-logo {
         font-size: 2.5rem; 
@@ -72,10 +72,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         background-color: #003566;
         border-radius: 0.375rem;
     }
+    #akhir-tabel{
+        margin-top: 3rem;
+    }
 </style>
 
-<body class="bg-white flex flex-row font-sand w-screen min-h-screen">
-    <section id="sidebar" class="flex flex-col bg-biru_sidebar px-4 py-20 w-1/6">
+<body class="bg-white flex flex-row font-sand w-screen overflow-x-hidden overflow-y-auto">
+<section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
         <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
@@ -93,21 +96,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Petugas</p>
             </div>
-            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer  active">
                 <p>Data Anggota</p>
             </div>
         </div>        
     </section>
-    <!-- main -->
-    <section class="flex flex-col bg-abu2 w-full">
+    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-3xl font-semibold">
-            <p>Tambah Anggota</p>
+        <div class="flex my-4 px-12 text-2xl font-semibold">
+            <p>Data Anggota</p>
         </div>
         <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white ">
+            <p class="font-bold text-2xl">Tambah Anggota</p>
             <form class="space-y-6 text-xl p-6" method="POST">
                 <div class="flex flex-row gap-8">
                     <label for="nama-anggota" class="block text-gray-700 font-bold md:w-1/6 text-right">Nama Anggota</label>

@@ -155,39 +155,8 @@ if (isset($_POST['update'])) {
             </form>
         </div>
     </section>
-
+    <script src="../js/asidehref.js"></script>
     <script>
-        const beranda = document.getElementById('sidebar-beranda');
-        const transaksi = document.getElementById('sidebar-transaksi');
-        const buku = document.getElementById('sidebar-buku');
-        const petugas = document.getElementById('sidebar-petugas');
-        const anggota = document.getElementById('sidebar-buku');
-        const tambahbuku = document.getElementById('tambah-buku');
-        
-        beranda.addEventListener('click', () => {
-            window.location.href = 'dasbor.php';
-        });
-
-        transaksi.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';
-        });
-
-        buku.addEventListener('click', () => {
-            window.location.href = 'data-buku.html';
-        });
-
-        petugas.addEventListener('click', () => {
-            window.location.href = 'data-petugas.html';
-        });
-
-        buku.addEventListener('click', () => {
-            window.location.href = 'data-buku.php';
-        });
-
-        tambahbuku.addEventListener('click', () => {
-            window.location.href = 'tambah-buku.php';
-        });
-        
         const tombolKembali = document.getElementById('tombol-kembali');
         tombolKembali.addEventListener('click', () => {
             window.history.back();
