@@ -1,49 +1,40 @@
 <?php
 include 'connect.php';
 
-$limit = 10;
-$search = '';
-$orderBy = 'nama';
-$orderDir = 'ASC';
+// Variabel awal
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$orderBy = isset($_GET['orderBy']) && in_array($_GET['orderBy'], ['nama', 'denda']) ? $_GET['orderBy'] : 'nama';
+$orderDir = isset($_GET['orderDir']) && $_GET['orderDir'] === 'DESC' ? 'DESC' : 'ASC';
+$selected_value = isset($_GET['data_count']) && in_array($_GET['data_count'], ['5', '10']) ? $_GET['data_count'] : '10';
+$currentPage = isset($_GET['page']) && ctype_digit($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// Menangkap parameter sorting dan pencarian
-if (isset($_GET['orderBy']) && in_array($_GET['orderBy'], ['nama', 'alamat', 'telepon', 'tanggal_lahir'])) {
-    $orderBy = $_GET['orderBy'];
-}
-if (isset($_GET['orderDir']) && in_array($_GET['orderDir'], ['ASC', 'DESC'])) {
-    $orderDir = $_GET['orderDir'];
-}
-if (isset($_POST['search']) && !empty(trim($_POST['search']))) {
-    $search = trim($_POST['search']);
-}
-if (isset($_POST['limit'])) {
-    $limit = (int)$_POST['limit'];
-}
+$limit = (int)$selected_value;
+$startLimit = ($currentPage - 1) * $limit;
+$searchParam = "%" . $search . "%";
 
-// Membuat klausa WHERE untuk pencarian
-$whereClause = '';
-if (!empty($search)) {
-    $whereClause = "WHERE nama LIKE :search OR telepon LIKE :search";
-}
+// Query menghitung total data
+$countQuery = $conn->prepare("SELECT COUNT(*) FROM anggota WHERE nama LIKE :search");
+$countQuery->bindValue(':search', $searchParam, PDO::PARAM_STR);
+$countQuery->execute();
+$totalData = (int) $countQuery->fetchColumn();
 
-// Query untuk total data
-$totalSql = "SELECT COUNT(*) as total FROM anggota $whereClause";
-$totalStmt = $conn->prepare($totalSql);
-if (!empty($search)) {
-    $totalStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-}
-$totalStmt->execute();
-$totalData = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-// Query untuk mengambil data
-$sql = "SELECT * FROM anggota $whereClause ORDER BY $orderBy $orderDir LIMIT :limit";
+// Query data buku
+$sql = "SELECT * FROM anggota WHERE nama LIKE :search ORDER BY $orderBy $orderDir LIMIT :limit OFFSET :offset";
 $stmt = $conn->prepare($sql);
-if (!empty($search)) {
-    $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-}
+$stmt->bindValue(':search', $searchParam, PDO::PARAM_STR);
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $startLimit, PDO::PARAM_INT);
 $stmt->execute();
-$anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Total halaman
+$totalPages = ceil($totalData / $limit);
+
+// Navigasi halaman
+$previousPage = $currentPage > 1 ? $currentPage - 1 : null;
+$nextPage = $currentPage < $totalPages ? $currentPage + 1 : null;
+
+$counter = $startLimit + 1;
 ?>
 
 
@@ -122,12 +113,14 @@ $anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="flex flex-row justify-between items-center p-4 rounded-t-lg">
                 <div class="flex flex-row items-center space-x-2 text-xl font-medium text-black opacity-75">
                     <span class="text-xl">Menampilkan</span>
-                    <form method="POST" class="flex items-center space-x-2">
-                        <select name="limit" class="border border-solid border-black px-2 py-2 rounded-md focus:outline-none" onchange="this.form.submit()">
-                            <option value="5" <?= $limit == 5 ? 'selected' : ''; ?>>5</option>
-                            <option value="10" <?= $limit == 10 ? 'selected' : ''; ?>>10</option>
-                        </select>
-                        <span class="text-xl">Data</span>
+                    <form method="GET" action="">
+                    <select name="data_count" onchange="this.form.submit()" class="px-2 py-1 border rounded">
+                        <option value="5" <?= $selected_value === '5' ? 'selected' : '' ?>>5</option>
+                        <option value="10" <?= $selected_value === '10' ? 'selected' : '' ?>>10</option>
+                    </select>
+                        <noscript>  
+                            <button type="submit" class="hidden">Submit</button>    
+                        </noscript>
                     </form>
                 </div>
                 <form method="POST" class="flex flex-row items-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
@@ -179,7 +172,7 @@ $anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </tr>
                 </thead>                  
                     <tbody class="bg-abu1 border border-collapse border-abu1 overflow-y-scroll text-lg">
-                    <?php foreach ($anggota as $index => $data) : ?>
+                    <?php foreach ($result as $index => $data) : ?>
                         <tr class="border-b">
                             <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $index + 1; ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $data['id']; ?></td>
@@ -196,17 +189,22 @@ $anggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </table>
             </div>
             <div id="akhir-tabel" class="flex flex-row justify-between items-center text-lg">
-                <?php if (empty($anggota)) : ?>
-                    <p class="text-red-600">Tidak ada data yang cocok dengan pencarian.</p>
-                <?php else : ?>
-                    <div>
-                        <p class="text-black">Menampilkan <?= count($anggota) ?> dari <?= $totalData ?> data anggota</p>
-                    </div>
-                    <div class="text-white font-medium space-x-3">
-                        <button id="tombol-kembali" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Sebelumnya</button>
-                        <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Selanjutnya</button>
-                    </div>
-                <?php endif; ?>
+                <div>
+                    <p>Menampilkan 
+                        <?= count($result) ?> 
+                        dari 
+                        <?= $totalData ?> 
+                        data
+                    </p>
+                </div>
+                <div class="text-white font-medium space-x-3">
+                    <?php if ($currentPage > 1): ?>
+                        <a href="?page=<?= $currentPage - 1 ?>&data_count=<?= $selected_value ?>&search=<?= $search ?>&orderBy=<?= $orderBy ?>&orderDir=<?= $orderDir ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Sebelumnya</a>
+                    <?php endif; ?>
+                    <?php if ($currentPage < $totalPages): ?>
+                        <a href="?page=<?= $currentPage + 1 ?>&data_count=<?= $selected_value ?>&search=<?= $search ?>&orderBy=<?= $orderBy ?>&orderDir=<?= $orderDir ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Selanjutnya</a>
+                    <?php endif; ?>
+                </div>
             </div>
 
         </div>
