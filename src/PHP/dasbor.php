@@ -1,25 +1,29 @@
 <?php 
     include 'connect.php';
 
-    $totalAnggota = 0;
-    $totalBuku = 0;
+    $queryBuku = "SELECT SUM(stok) AS total FROM buku";
 
     try {
+        // Query untuk menghitung total anggota
         $queryAnggota = "SELECT COUNT(*) AS total FROM anggota";
         $stmtAnggota = $conn->prepare($queryAnggota);
         $stmtAnggota->execute();
         $resultAnggota = $stmtAnggota->fetch(PDO::FETCH_ASSOC);
         $totalAnggota = $resultAnggota['total'];
-
-        $queryBuku = "SELECT COUNT(*) AS total FROM buku";
+    
+        // Query untuk menghitung total buku berdasarkan stock
+        $queryBuku = "SELECT SUM(stok) AS total FROM buku";
         $stmtBuku = $conn->prepare($queryBuku);
         $stmtBuku->execute();
         $resultBuku = $stmtBuku->fetch(PDO::FETCH_ASSOC);
-        $totalBuku = $resultBuku['total'];
+        $totalBuku = $resultBuku['total'] ?? 0; // Berikan nilai 0 jika hasil null
     } 
     catch (PDOException $e) {
         $error = "Error: " . $e->getMessage();
     }
+
+    $totalBuku = $resultBuku['total'] ?? 0;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
