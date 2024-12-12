@@ -123,7 +123,7 @@ $counter = $startLimit + 1;
                 <span class="text-xl">Data</span>
             </div>
             <form class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl" method="GET" action="">
-                    <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari judul buku">
+                    <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari judul buku...">
                     <button type="submit"><i class="fi fi-rr-search cursor-pointer"></i></button>
                 </form>
             </div>
