@@ -1,3 +1,27 @@
+<?php
+include 'connect.php';
+
+try {
+    // Query untuk membaca data terakhir yang ditambahkan ke tabel peminjaman
+    $sql = "
+        SELECT 
+            b.judul, b.kategori, b.pengarang, b.penerbit, b.tahun_terbit, b.isbn, b.stok,
+            a.id AS id_anggota, a.nama AS nama_anggota, a.telepon, a.alamat,
+            g.id AS id_petugas, g.nama AS nama_petugas,
+            p.tanggal_pinjam, p.tanggal_kembali
+        FROM peminjaman p
+        JOIN anggota a ON p.id_anggota = a.id
+        JOIN buku b ON p.isbn = b.isbn
+        JOIN petugas g ON p.id_petugas = g.id
+        ORDER BY p.id DESC
+        LIMIT 1"; // Ambil data peminjaman terbaru
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+  } catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,10 +65,10 @@
             <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
-            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Transaksi</p>
             </div>
-            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Buku</p>
             </div>
             <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
@@ -69,6 +93,10 @@
         <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Tambah Peminjaman</p>
         </div>
+        <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-biru_sidebar mb-4">
+            <p class="text-2xl font-bold text-white">Sistem:</p>
+            <p class="text-2xl text-white">Pustaka tersedia.</p>
+        </div>
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
             <div>
                 <div class="flex justify-between border-b-2 p-2">
@@ -79,41 +107,34 @@
                     <p class="text-left text-xl font-medium">Nomor Pustaka</p>
                 </div>
                 <table class="border-collapse mt-2 w-full">
+                <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                     <tr>
-                      <td class="bg-abu1 font-bold w-1/2">Nomor Pustaka</td>
-                      <td class="bg-abu1">#2</td>
+                      <td class="bg-abu1 font-bold w-1/2">Judul</td>
+                      <td class="bg-abu1"><?= $row['judul'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">Judul</td>
-                      <td>Ayamku</td>
+                      <td class="font-bold w-1/2">Kategori</td>
+                      <td><?= $row['kategori'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold bg-abu1 w-1/2">Kategori</td>
-                      <td class="bg-abu1">IPA</td>
+                      <td class="font-bold bg-abu1 w-1/2">Pengarang</td>
+                      <td class="bg-abu1"><?= $row['pengarang'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">Pengarang</td>
-                      <td>Caca</td>
+                      <td class="font-bold w-1/2">Penerbit</td>
+                      <td><?= $row['penerbit'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2 bg-abu1">Penerbit</td>
-                      <td class="bg-abu1">Parul</td>
+                      <td class="font-bold w-1/2 bg-abu1">Tahun</td>
+                      <td class="bg-abu1"><?= $row['tahun_terbit'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">Tahun</td>
-                      <td>2025</td>
+                      <td class="font-bold w-1/2">ISBN</td>
+                      <td><?= $row['isbn'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold bg-abu1 w-1/2">ISBN</td>
-                      <td class="bg-abu1">0198423843209</td>
-                    </tr>
-                    <tr>
-                      <td class="font-bold w-1/2">Klasifikasi</td>
-                      <td>RA02</td>
-                    </tr>
-                    <tr>
-                      <td class="font-bold bg-abu1 w-1/2">Jumlah</td>
-                      <td class="bg-abu1">5</td>
+                      <td class="font-bold bg-abu1 w-1/2">Stok</td>
+                      <td class="bg-abu1"><?= $row['stok'] ?></td>
                     </tr>
                   </table>    
             </div>
@@ -128,19 +149,19 @@
                 <table class="border-collapse mt-2 w-full">
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Nomor Anggota</td>
-                      <td class="bg-abu1">#2839</td>
+                      <td class="bg-abu1"><?= $row['id_anggota'] ?></td>
                     </tr>
                     <tr>
                       <td class="font-bold w-1/2">Nama</td>
-                      <td>Clara</td>
+                      <td><?= $row['nama_anggota'] ?></td>
                     </tr>
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Telepon</td>
-                      <td class="bg-abu1">029383749302</td>
+                      <td class="bg-abu1"><?= $row['telepon'] ?></td>
                     </tr>
                     <tr>
                       <td class="font-bold w-1/2">Alamat</td>
-                      <td>Batam</td>
+                      <td><?= $row['alamat'] ?></td>
                     </tr>
                   </table>
             </div>
@@ -153,21 +174,22 @@
                 </div>
                 <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class=" bg-abu1 font-bold w-1/2">Admin</td>
-                      <td class="bg-abu1">Aska</td>
+                      <td class=" bg-abu1 font-bold w-1/2">Petugas</td>
+                      <td class="bg-abu1"><?= $row['nama_petugas'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">NIP</td>
-                      <td>0866890875</td>
+                      <td class="font-bold w-1/2">Nomor Petugas</td>
+                      <td><?= $row['id_petugas'] ?></td>
                     </tr>
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Tanggal Pinjam</td>
-                      <td class="bg-abu1">29/13/2009</td>
+                      <td class="bg-abu1"><?= $row['tanggal_pinjam'] ?></td>
                     </tr>
                     <tr>
                       <td class="font-bold w-1/2">Batas Pengembalian</td>
-                      <td>09/30/2003</td>
+                      <td><?= $row['tanggal_kembali'] ?></td>
                     </tr>
+                    <?php } ?>
                   </table>
             </div>
             <div class="flex flex-row-reverse p-1 mt-4">
@@ -186,9 +208,11 @@
         const kembali = document.getElementById('kembali-transaksi');
         const selesai = document.getElementById('selesai-transaksi');
         kembali.addEventListener('click', () => {
-            window.location.href = 'transaksi-tambah_peminjaman.html';    
+            window.location.href = 'transaksi-tambah_peminjaman.php';    
+        });
+        selesai.addEventListener('click', () => {
+            window.location.href = 'transaksi.php';    
         });
     </script>
-
 </body>
 </html>
