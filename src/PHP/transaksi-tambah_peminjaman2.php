@@ -2,7 +2,6 @@
 include 'connect.php';
 
 try {
-    // Query untuk membaca data terakhir yang ditambahkan ke tabel peminjaman
     $sql = "
         SELECT 
             b.judul, b.kategori, b.pengarang, b.penerbit, b.tahun_terbit, b.isbn, b.stok,
@@ -14,7 +13,7 @@ try {
         JOIN buku b ON p.isbn = b.isbn
         JOIN petugas g ON p.id_petugas = g.id
         ORDER BY p.id DESC
-        LIMIT 1"; // Ambil data peminjaman terbaru
+        LIMIT 1";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -174,7 +173,7 @@ try {
                 </div>
                 <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class=" bg-abu1 font-bold w-1/2">Petugas</td>
+                      <td class=" bg-abu1 font-bold w-1/2">Nama</td>
                       <td class="bg-abu1"><?= $row['nama_petugas'] ?></td>
                     </tr>
                     <tr>
