@@ -47,6 +47,11 @@ if (isset($_POST['tambah_pengembalian'])) {
             $stmt_delete->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt_delete->execute();
 
+            $sql_update_stok = "UPDATE buku SET stok = stok + 1 WHERE isbn = :isbn";
+            $stmt_update_stok = $conn->prepare($sql_update_stok);
+            $stmt_update_stok->bindParam(':isbn', $isbn);
+            $stmt_update_stok->execute();
+            
             header('Location: transaksi-tambah_pengembalian2.php');
             exit();
         } else {
@@ -172,7 +177,7 @@ if (isset($_POST['tambah_pengembalian'])) {
     <script>
         const kembali = document.getElementById('kembali-transaksi');
         kembali.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';    
+            window.location.href = 'transaksi.php';    
         });
     </script>
 

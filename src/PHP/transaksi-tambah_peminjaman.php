@@ -19,8 +19,12 @@ if (isset($_POST['tambah_peminjaman'])) {
     $stmt->bindParam(':isbn', $isbn);
     $stmt->bindParam(':tanggal_pinjam', $tanggal_pinjam);
     $stmt->bindParam(':tanggal_kembali', $tanggal_kembali);
-
+    
     if ($stmt->execute()) {
+        $sql_update_stok = "UPDATE buku SET stok = stok - 1 WHERE isbn = :isbn";
+        $stmt_update = $conn->prepare($sql_update_stok);
+        $stmt_update->bindParam(':isbn', $isbn);
+        $stmt_update->execute();
         header('Location: transaksi-tambah_peminjaman2.php');
         exit();
     } else {
@@ -92,7 +96,7 @@ if (isset($_POST['tambah_peminjaman'])) {
             </div>
         </div>        
     </section>
-    <section class="bg-white flex flex-row h-screen font-sand w-screen">
+    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0 overflow-x-hidden">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
