@@ -1,3 +1,69 @@
+<?php
+include 'connect.php';
+
+if (isset($_POST['tambah_pengembalian'])) {
+    $id = $_POST['id']; // ID Pengembalian
+    $kondisi = $_POST['kondisi'];
+    $tanggal_kembali = date('Y-m-d');
+    $sql = "SELECT id_petugas, id_anggota, isbn, tanggal_kembali AS tanggal_batas, tanggal_pinjam 
+            FROM peminjaman 
+            WHERE id = :id LIMIT 1";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $id_petugas = $row['id_petugas'];
+        $id_anggota = $row['id_anggota'];
+        $tanggal_pinjam = $row['tanggal_pinjam'];
+        $isbn = $row['isbn'];
+        $tanggal_batas = $row['tanggal_batas'];
+
+        // Hitung denda
+        $denda = 0;
+        if ($tanggal_batas < $tanggal_kembali) {
+            $denda = (strtotime($tanggal_kembali) - strtotime($tanggal_batas)) / (60 * 60 * 24) * 5000;  // Denda per hari
+        }
+
+        $sql_pengembalian = "INSERT INTO pengembalian (id_anggota, id_petugas, isbn, tanggal_kembali, kondisi, denda, tanggal_pinjam)
+                             VALUES (:id_anggota, :id_petugas, :isbn, :tanggal_kembali, :kondisi, :denda, :tanggal_pinjam)";
+
+        $stmt_pengembalian = $conn->prepare($sql_pengembalian);
+        $stmt_pengembalian->bindParam(':id_anggota', $id_anggota);
+        $stmt_pengembalian->bindParam(':id_petugas', $id_petugas);
+        $stmt_pengembalian->bindParam(':isbn', $isbn);
+        $stmt_pengembalian->bindParam(':tanggal_kembali', $tanggal_kembali);
+        $stmt_pengembalian->bindParam(':kondisi', $kondisi);
+        $stmt_pengembalian->bindParam(':denda', $denda);
+        $stmt_pengembalian->bindParam(':tanggal_pinjam', $tanggal_pinjam);
+
+
+        if ($stmt_pengembalian->execute()) {
+            $sql_delete = "DELETE FROM peminjaman WHERE id = :id";
+
+            $stmt_delete = $conn->prepare($sql_delete);
+            $stmt_delete->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt_delete->execute();
+
+            $sql_update_stok = "UPDATE buku SET stok = stok + 1 WHERE isbn = :isbn";
+            $stmt_update_stok = $conn->prepare($sql_update_stok);
+            $stmt_update_stok->bindParam(':isbn', $isbn);
+            $stmt_update_stok->execute();
+            
+            header('Location: transaksi-tambah_pengembalian2.php');
+            exit();
+        } else {
+            echo "<script>document.getElementById('error').classList.remove('hidden');</script>";
+        }
+    } else {
+        echo "<script>document.getElementById('error').classList.remove('hidden');</script>";
+    }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,42 +135,50 @@
         <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Transaksi</p>
         </div>
+        <div id="error" class="flex-col mx-12 p-4 rounded-lg shadow-md bg-red-600 mb-4 hidden">
+            <p class="text-2xl font-bold text-white">Terjadi kesalahan. Silakan coba lagi.</p>
+        </div>
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
-            <p class="text-2xl font-bold">Tambah Pengembalian</p>
+        <p class="text-2xl font-bold">Tambah Peminjaman</p>
             <div class="p-4 m-5 justify-center items-center flex flex-col">
-                <div class="grid grid-cols-2 m-2 items-center gap-4">
+            <form action="" method="POST">
+            <div class="grid grid-cols-2 m-2 items-center gap-4">
                     <p class="text-right min-w-32">Nomor Peminjaman</p>
-                    <form>
+                        <div class="flex items-center">
+                            <div class="relative flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                <img src="../../img/icon_noanggota.svg" alt="Ikon Nomor Anggota" class="border-r-2 w-10 h-10 px-2">
+                                <input input type="text" name="id" id="id" class="flex-grow w-64 px-3 py-2 outline-none" required>
+                            </div>
+                        </div>
+                </div>      
+
+                <div class="grid grid-cols-2 m-2 items-center gap-4">
+                    <p class="text-right min-w-32">Kondisi Buku</p>
                         <div class="flex items-center">
                             <div class="relative flex items-center border border-gray-300 rounded-lg overflow-hidden">
                                 <img src="../../img/icon_nobuku.svg" alt="Ikon Nomor Buku" class="border-r-2 w-10 h-10 px-2">
-                                <input type="text" id="nomor-buku" name="nomor-buku" class="flex-grow w-64 px-3 py-2 outline-none">
+                                <input input type="text" name="kondisi" id="kondisi" class="flex-grow w-64 px-3 py-2 outline-none" required>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
             <div class="flex flex-row-reverse p-1">
-                <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+                <button type="submit" name="tambah_pengembalian" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
                     <p>Selesai</p>
                 </button>
                 <button id="kembali-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
                     <p>Kembali</p>
                 </button>
             </div>
+            </form>
         </div>
     </section>
     <script src="../js/asidehref.js"></script>
     <script>
         const kembali = document.getElementById('kembali-transaksi');
-        const selesai = document.getElementById('selesai-transaksi');
         kembali.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';    
+            window.location.href = 'transaksi.php';    
         });
-        selesai.addEventListener('click', () => {
-            window.location.href = 'transaksi-tambah_pengembalian2.html';    
-        });
-
     </script>
 
 </body>

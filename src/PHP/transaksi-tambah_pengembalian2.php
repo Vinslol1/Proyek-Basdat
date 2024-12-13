@@ -1,3 +1,31 @@
+<?php
+include 'connect.php';
+
+try {
+    $sql = "
+        SELECT 
+            b.judul, p.id AS id_pengembalian, b.isbn,
+            a.id AS id_anggota, a.nama AS nama_anggota, a.alamat,
+            g.id AS id_petugas, g.nama AS nama_petugas,
+            p.denda, p.tanggal_pinjam, p.tanggal_kembali,
+            TO_CHAR(p.tanggal_pinjam + INTERVAL '14 days', 'YYYY-MM-DD') AS tanggal_batas
+        FROM pengembalian p
+        JOIN anggota a ON p.id_anggota = a.id
+        JOIN buku b ON p.isbn = b.isbn
+        JOIN petugas g ON p.id_petugas = g.id
+        ORDER BY p.id DESC
+        LIMIT 1"; // Ambil data pengembalian terbaru
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+  } catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,69 +97,75 @@
         <div class="flex my-8 px-12 text-3xl font-semibold">
             <p>Tambah Peminjaman</p>
         </div>
+        <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-green-500 mb-4">
+            <p class="text-2xl font-bold text-white">Sistem:</p>
+            <p class="text-2xl text-white">Data ditemukan.</p>
+        </div>
+
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
             <div>
                 <div class="flex border-b-2 p-2 gap-5">
                     <img src="../../img/Group.svg" alt="Informasi Pustaka">
                     <h2 class="text-2xl font-bold">Informasi Peminjaman</h2>
                 </div>
+                <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                 <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="bg-abu1 font-bold w-1/2">Nomor Peminjaman</td>
-                      <td class="bg-abu1">#2023</td>
+                      <td class="bg-abu1 font-bold w-1/2">Nomor Pengembalian</td>
+                      <td class="bg-abu1"><?= $row['id_pengembalian'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">Nomor Buku</td>
-                      <td>324452</td>
+                      <td class="font-bold w-1/2">ISBN</td>
+                      <td><?= $row['isbn'] ?></td>
                     </tr>
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Judul</td>
-                      <td class="bg-abu1">Cara Belajar Dengan Benar</td>
+                      <td class="bg-abu1"><?= $row['judul'] ?></td>
                     </tr>
                     <tr>
                       <td class="font-bold w-1/2">Nomor Anggota</td>
-                      <td>39284</td>
+                      <td><?= $row['id_anggota'] ?></td>
                     </tr>
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Nama</td>
-                      <td class="bg-abu1">Parul</td>
+                      <td class="bg-abu1"><?= $row['nama_anggota'] ?></td>
                     </tr>
                     <tr>
                       <td class="font-bold w-1/2">Tanggal Pinjam</td>
-                      <td>02/02/2024</td>
+                      <td><?= $row['tanggal_pinjam'] ?></td>
                     </tr>
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Batas Pengembalian</td>
-                      <td class="bg-abu1">12/02/2024</td>
+                      <td class="bg-abu1"><?= $row['tanggal_batas'] ?></td>
                     </tr>
                   </table>
         </div>
-            <div>
+        <div>
                 <div class="flex justify-between border-b-2 p-2 mt-2">
-                    <div class="flex gap-5">
-                        <img src="../../img/Group.svg" alt="Informasi Pustaka">
-                        <h2 class="text-2xl font-bold">Informasi Pengembalian</h2>
-                    </div>
-                    <p class="text-left text-xl font-medium">Nomor Anggota: </p>
+                  <div class="flex gap-5">
+                    <img src="../../img/Group.svg" alt="Informasi Pustaka">
+                    <h2 class="text-2xl font-bold">Informasi Pengembalian</h2>
+                  </div>
                 </div>
                 <table class="border-collapse mt-2 w-full">
                     <tr>
-                      <td class="bg-abu1 font-bold w-1/2">Admin</td>
-                      <td class="bg-abu1">#2839</td>
+                      <td class=" bg-abu1 font-bold w-1/2">Nama</td>
+                      <td class="bg-abu1"><?= $row['nama_petugas'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">NIP</td>
-                      <td>23200240023</td>
+                      <td class="font-bold w-1/2">Nomor Petugas</td>
+                      <td><?= $row['id_petugas'] ?></td>
                     </tr>
                     <tr>
                       <td class="bg-abu1 font-bold w-1/2">Tanggal Kembali</td>
-                      <td class="bg-abu1">10/02/2024</td>
+                      <td class="bg-abu1"><?= $row['tanggal_kembali'] ?></td>
                     </tr>
                     <tr>
-                      <td class="font-bold w-1/2">Keterlambatan</td>
-                      <td>Tidak</td>
+                      <td class="font-bold w-1/2">Denda</td>
+                      <td><?= $row['denda'] ?></td>
                     </tr>
-                </table>
+                    <?php } ?>
+                  </table>
         </div>
             <div class="flex flex-row-reverse p-1">
                 <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
@@ -149,8 +183,12 @@
         const kembali = document.getElementById('kembali-transaksi');
         const selesai = document.getElementById('selesai-transaksi');
         kembali.addEventListener('click', () => {
-            window.location.href = 'transaksi-tambah_pengembalian.html';    
+            window.location.href = 'transaksi-tambah_pengembalian.php';    
         });
+        selesai.addEventListener('click', () => {
+            window.location.href = 'transaksi.php';    
+        });
+
     </script>
 
 </body>
