@@ -88,7 +88,6 @@ try {
         </div>
         <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white">
             <p class="text-2xl font-bold">Tambah Peminjaman</p>
-        
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
             <div>
                 <div class="flex justify-between border-b-2 p-2">
