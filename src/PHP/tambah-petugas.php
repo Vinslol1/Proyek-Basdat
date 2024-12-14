@@ -66,16 +66,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span>SATU PERPUS</span>
         </div>
         <div class="flex flex-col w-full rounded-lg text-xl text-white space-y-2 px-4">
-            <div class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+        <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
-            <div class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+                <p>Transaksi</p>
+            </div>
+            <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Buku</p>
             </div>
-            <div class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Data Petugas</p>
             </div>
-            <div class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer  ">
                 <p>Data Anggota</p>
             </div>
         </div>
