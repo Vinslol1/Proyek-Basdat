@@ -1,8 +1,6 @@
 <?php 
     include 'connect.php';
 
-    $queryBuku = "SELECT SUM(stok) AS total FROM buku";
-
     try {
         // Query untuk menghitung total anggota
         $queryAnggota = "SELECT COUNT(*) AS total FROM anggota";
@@ -10,20 +8,41 @@
         $stmtAnggota->execute();
         $resultAnggota = $stmtAnggota->fetch(PDO::FETCH_ASSOC);
         $totalAnggota = $resultAnggota['total'];
-    
-        // Query untuk menghitung total buku berdasarkan stock
+
+        // Query untuk menghitung total buku berdasarkan stok
         $queryBuku = "SELECT SUM(stok) AS total FROM buku";
         $stmtBuku = $conn->prepare($queryBuku);
         $stmtBuku->execute();
         $resultBuku = $stmtBuku->fetch(PDO::FETCH_ASSOC);
         $totalBuku = $resultBuku['total'] ?? 0; // Berikan nilai 0 jika hasil null
+
+        // Query untuk menghitung total data peminjaman
+        $queryPeminjaman = "SELECT COUNT(*) AS total FROM peminjaman";
+        $stmtPeminjaman = $conn->prepare($queryPeminjaman);
+        $stmtPeminjaman->execute();
+        $resultPeminjaman = $stmtPeminjaman->fetch(PDO::FETCH_ASSOC);
+        $totalPeminjaman = $resultPeminjaman['total'];
+
+        // Query untuk menghitung total data pengembalian
+        $queryPengembalian = "SELECT COUNT(*) AS total FROM pengembalian";
+        $stmtPengembalian = $conn->prepare($queryPengembalian);
+        $stmtPengembalian->execute();
+        $resultPengembalian = $stmtPengembalian->fetch(PDO::FETCH_ASSOC);
+        $totalPengembalian = $resultPengembalian['total'];
+
+        // Query untuk menghitung jumlah denda > 0
+        $queryDenda = "SELECT SUM(denda) AS total FROM pengembalian WHERE denda > 0";
+        $stmtDenda = $conn->prepare($queryDenda);
+        $stmtDenda->execute();
+        $resultDenda = $stmtDenda->fetch(PDO::FETCH_ASSOC);
+        $totalDenda = $resultDenda['total'] ?? 0; // Berikan nilai 0 jika hasil null
+
+        // Hitung jumlah buku tersedia (total buku - total peminjaman)
+        $bukuTersedia = $totalBuku - $totalPeminjaman;
     } 
     catch (PDOException $e) {
         $error = "Error: " . $e->getMessage();
     }
-
-    $totalBuku = $resultBuku['total'] ?? 0;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,39 +118,49 @@
                     </p>
                 </div>
             </div>
-            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
-                <i class="fi fi-ts-book-arrow-up"></i>
-                <div class="flex flex-col w-1/2">
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 w-2/3 space-x-10">
+            <i class="fi fi-ts-book-arrow-up"></i>
+            <div class="flex flex-col w-1/2">
                     <p class="flex justify-center text-xl">Peminjaman</p>
-                    <p class="flex text-2xl font-semibold justify-center">1</p>
+                    <p id="total-peminjaman" class="flex justify-center text-2xl font-semibold">
+                        <?= htmlspecialchars($totalPeminjaman); ?>
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3">
-                <i class="fi fi-tr-restock"></i>
-                <div class="flex flex-col w-1/2">
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 w-2/3 space-x-10">
+            <i class="fi fi-tr-restock"></i>
+            <div class="flex flex-col w-1/2">
                     <p class="flex justify-center text-xl">Pengembalian</p>
-                    <p class="flex justify-center text-2xl font-semibold">1</p>
+                    <p id="total-pengembalian" class="flex justify-center text-2xl font-semibold">
+                        <?= htmlspecialchars($totalPengembalian); ?>
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 w-2/3 space-x-10">
                 <i class="fi fi-tr-books"></i>
                 <div class="flex flex-col w-1/2">
                     <p class="flex justify-center text-xl">Total Buku</p>
-                    <p class="flex justify-center text-2xl font-semibold"><?= htmlspecialchars($totalBuku); ?></p>
+                    <p id="total-buku" class="flex justify-center text-2xl font-semibold">
+                        <?= htmlspecialchars($totalBuku); ?>
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 w-2/3 space-x-10">
                 <i class="fi fi-tr-book-open-cover"></i>
                 <div class="flex flex-col w-1/2">
                     <p class="flex justify-center text-xl">Buku Tersedia</p>
-                    <p class="flex justify-center text-2xl font-semibold">1</p>
+                    <p id="total-tersedia" class="flex justify-center text-2xl font-semibold">
+                        <?= htmlspecialchars($bukuTersedia); ?>
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 space-x-10 w-2/3 ">
+            <div class="flex flex-row items-center justify-center bg-biru_sidebar text-white rounded-2xl p-6 w-2/3 space-x-10">
                 <i class="fi fi-tr-money-check-edit"></i>
                 <div class="flex flex-col w-1/2">
                     <p class="flex justify-center text-xl">Denda</p>
-                    <p class="flex justify-center text-2xl font-semibold">1</p>
+                    <p id="total-denda" class="flex justify-center text-2xl font-semibold">
+                        <?= htmlspecialchars($totalDenda); ?>
+                    </p>
                 </div>
             </div>
         </div>

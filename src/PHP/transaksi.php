@@ -1,9 +1,6 @@
 <?php 
 include 'connect.php';
 
-
-$counter_pengembalian = 1;
-
 // untuk peminjaman
 $searchPinjam = isset($_GET['search_pinjam']) ? trim($_GET['search_pinjam']) : '';
 $orderByPinjam = isset($_GET['orderBy_pinjam']) && in_array($_GET['orderBy_pinjam'], ['id', 'tanggal_pinjam', 'nama', 'judul']) ? $_GET['orderBy_pinjam'] : 'tanggal_pinjam';
@@ -27,11 +24,11 @@ $countQueryPinjam->execute();
 $totalDataPinjam = (int) $countQueryPinjam->fetchColumn();
 
 $queryPinjam = $conn->prepare("
-    SELECT p.id, p.tanggal_pinjam, p.tanggal_kembali, a.nama, b.judul
+    SELECT p.id, p.tanggal_pinjam, a.nama, b.judul
     FROM peminjaman p
     JOIN anggota a ON p.id_anggota = a.id
     JOIN buku b ON p.isbn = b.isbn
-    WHERE a.nama LIKE :search OR b.judul LIKE :search
+    WHERE a.nama LIKE :search OR b.judul LIKE :search OR CAST(p.tanggal_pinjam AS TEXT) LIKE :search OR CAST(p.id AS TEXT) LIKE :search
     ORDER BY $orderByPinjam $orderDirPinjam
     LIMIT :limit OFFSET :offset
 ");
@@ -49,15 +46,15 @@ $counterPinjam = $startLimitPinjam + 1;
 
 
 // untuk pengembalian
-$search = isset($_GET['search_kembali']) ? trim($_GET['search_kembali']) : '';
-$orderBy = isset($_GET['orderBy_kembali']) && in_array($_GET['orderBy_kembali'], ['id', 'tanggal_kembali', 'nama', 'judul', 'denda']) ? $_GET['orderBy_kembali'] : 'tanggal_kembali';
-$orderDir = isset($_GET['orderDir_kembali']) && $_GET['orderDir_kembali'] === 'DESC' ? 'DESC' : 'ASC';
-$selected_value = isset($_GET['data_count_kembali']) && in_array($_GET['data_count_kembali'], ['5', '10']) ? $_GET['data_count_kembali'] : '10';
-$currentPage = isset($_GET['page_kembali']) && ctype_digit($_GET['page_kembali']) ? (int)$_GET['page_kembali'] : 1;
+$searchKembali = isset($_GET['search_kembali']) ? trim($_GET['search_kembali']) : '';
+$orderByKembali = isset($_GET['orderBy_kembali']) && in_array($_GET['orderBy_kembali'], ['id', 'tanggal_kembali', 'nama', 'judul', 'denda']) ? $_GET['orderBy_kembali'] : 'tanggal_kembali';
+$orderDirKembali = isset($_GET['orderDir_kembali']) && $_GET['orderDir_kembali'] === 'DESC' ? 'DESC' : 'ASC';
+$selected_valueKembali = isset($_GET['data_count_kembali']) && in_array($_GET['data_count_kembali'], ['5', '10']) ? $_GET['data_count_kembali'] : '10';
+$currentPageKembali = isset($_GET['page_kembali']) && ctype_digit($_GET['page_kembali']) ? (int)$_GET['page_kembali'] : 1;
 
-$limit = (int)$selected_value;
-$startLimit = ($currentPage - 1) * $limit;
-$searchParam = "%" . $search . "%";
+$limitKembali = (int)$selected_valueKembali;
+$startLimitKembali = ($currentPageKembali - 1) * $limitKembali;
+$searchParamKembali = "%" . $searchKembali . "%";
 
 $countQueryKembali= $conn->prepare("
     SELECT COUNT(*) 
@@ -66,7 +63,7 @@ $countQueryKembali= $conn->prepare("
     JOIN buku b ON p.isbn = b.isbn
     WHERE a.nama LIKE :search OR b.judul LIKE :search
 ");
-$countQueryKembali->bindValue(':search', $searchParam, PDO::PARAM_STR);
+$countQueryKembali->bindValue(':search', $searchParamKembali, PDO::PARAM_STR);
 $countQueryKembali->execute();
 $totalDataKembali = (int) $countQueryKembali->fetchColumn();
 
@@ -75,17 +72,20 @@ $queryKembali = $conn->prepare("
     FROM pengembalian p
     JOIN anggota a ON p.id_anggota = a.id
     JOIN buku b ON p.isbn = b.isbn
-    WHERE a.nama LIKE :search OR b.judul LIKE :search
-    ORDER BY $orderBy $orderDir
+    WHERE a.nama LIKE :search OR b.judul LIKE :search OR CAST(p.denda AS TEXT) LIKE :search OR CAST(p.tanggal_kembali AS TEXT) LIKE :search OR CAST(p.id AS TEXT) LIKE :search
+    ORDER BY $orderByKembali $orderDirKembali
     LIMIT :limit OFFSET :offset
 ");
-$queryKembali->bindValue(':search', $searchParam, PDO::PARAM_STR);
-$queryKembali->bindValue(':limit', $limit, PDO::PARAM_INT);
-$queryKembali->bindValue(':offset', $startLimit, PDO::PARAM_INT);
+$queryKembali->bindValue(':search', $searchParamKembali, PDO::PARAM_STR);
+$queryKembali->bindValue(':limit', $limitKembali, PDO::PARAM_INT);
+$queryKembali->bindValue(':offset', $startLimitKembali, PDO::PARAM_INT);
 $queryKembali->execute();
 $resultKembali = $queryKembali->fetchAll(PDO::FETCH_ASSOC);
 
-$totalPagesKembali = ceil($totalDataKembali / $limit);
+$totalPagesKembali = ceil($totalDataKembali / $limitKembali);
+$previousPageKembali = $currentPageKembali > 1 ? $currentPageKembali - 1 : null;
+$nextPageKembali = $currentPageKembali < $totalPagesKembali ? $currentPageKembali + 1 : null;
+$counterKembali = $startLimitKembali + 1;
 
 
 ?>
@@ -148,9 +148,6 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
             <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Pengunjung</p>
             </div>
-            <div id="sidebar-pengaturan" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Pengaturan</p>
-            </div>
         </div>        
     </section>
     <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0 overflow-x-hidden">
@@ -162,11 +159,11 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
             <p>Transaksi</p>
         </div>
         <div class="flex space-x-2">
-            <button id="tambah_peminjaman" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+            <button id="tambah_peminjaman" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/5 h-14 rounded-xl space-x-4 text-white">
                 <i class="fi fi-ts-inbox-out"></i>
                 <p>Tambah Peminjaman</p>
             </button>
-            <button id="tambah_pengembalian" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/6 h-14 rounded-xl space-x-4 text-white">
+            <button id="tambah_pengembalian" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-12 text-2xl font-medium w-1/5 h-14 rounded-xl space-x-4 text-white">
                 <i class="fi fi-ts-inbox-in"></i>
                 <p>Tambah Pengembalian</p>
             </button>
@@ -188,7 +185,7 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                     <span class="text-xl">Data</span>
                 </div>
                 <form class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
-                    <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari peminjaman">
+                    <input type="text" name="search_pinjam" value="<?= htmlspecialchars($searchPinjam) ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari peminjaman">
                     <button type="submit"><i class="fi fi-rr-search cursor-pointer"></i></button>
                 </form>
             </div>
@@ -204,35 +201,28 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Tanggal Peminjaman</span>
-                                <a href="?orderBy_pinjam=tanggal_pinjam&orderDir_pinjam=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
-                                <i class="fi fi-tr-sort-alt"></i></a>
-                            </div>
-                        </th>
-                        <th class="px-4 py-2 border border-solid border-abu_border">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <span>Batas Pengembalian</span>
-                                <a href="?orderBy_pinjam=tanggal_pinjam&orderDir_pinjam=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_pinjam=tanggal_pinjam&orderDir_pinjam=<?= $orderDirPinjam === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>ID</span>
-                                <a href="?orderBy_pinjam=id&orderDir_pinjam=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_pinjam=id&orderDir_pinjam=<?= $orderDirPinjam === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Nama Anggota</span>
-                                <a href="?orderBy_pinjam=nama&orderDir_pinjam=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_pinjam=nama&orderDir_pinjam=<?= $orderDirPinjam === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Judul Buku</span>
-                                <a href="?orderBy_pinjam=judul&orderDir_pinjam=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_pinjam=judul&orderDir_pinjam=<?= $orderDirPinjam === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
@@ -244,7 +234,6 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                         <tr class="border-b">
                             <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $counterPinjam++ ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['tanggal_pinjam'] ?></td>
-                            <td class="px-4 py-2 border border-right border-abu_border"><?= $row['tanggal_kembali'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['id'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['nama'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['judul'] ?></td>
@@ -252,7 +241,7 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                     <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                        <td colspan="5" class="text-center text-gray-500 px-4 py-2">Tidak ada data ditemukan</td>
+                        <td colspan="5" class="text-center text-gray-500 px-4 py-2 border-abu_border">Tidak ada data ditemukan</td>
                         </tr>
                     <?php endif; ?>
                     </tbody>
@@ -269,10 +258,10 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                 </div>
                 <div class="text-white font-medium space-x-3">
                     <?php if ($currentPagePinjam > 1): ?>
-                        <a href="?page=<?= $currentPagePinjam - 1 ?>&data_count=<?= $selected_valuePinjam ?>&search=<?= $searchPinjam ?>&orderBy=<?= $orderByPinjam ?>&orderDir=<?= $orderDirPinjam ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Sebelumnya</a>
+                        <a href="?page_pinjam=<?= $currentPagePinjam - 1 ?>&data_count_pinjam=<?= $selected_valuePinjam ?>&search_pinjam=<?= $searchPinjam ?>&orderBy_pinjam=<?= $orderByPinjam ?>&orderDir_pinjam=<?= $orderDirPinjam ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Sebelumnya</a>
                     <?php endif; ?>
                     <?php if ($currentPagePinjam < $totalPagesPinjam): ?>
-                        <a href="?page=<?= $currentPagePinjam + 1 ?>&data_count=<?= $selected_valuePinjam ?>&search=<?= $searchPinjam ?>&orderBy=<?= $orderByPinjam ?>&orderDir=<?= $orderDirPinjam ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Selanjutnya</a>
+                        <a href="?page_pinjam=<?= $currentPagePinjam + 1 ?>&data_count_pinjam=<?= $selected_valuePinjam ?>&search_pinjam=<?= $searchPinjam ?>&orderBy_pinjam=<?= $orderByPinjam ?>&orderDir_pinjam=<?= $orderDirPinjam ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Selanjutnya</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -282,17 +271,21 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
             <div class="flex flex-row justify-between items-center p-4 rounded-t-lg">
                 <div class="flex flex-row items-center space-x-2 text-xl font-medium text-black opacity-75">
                     <span class="text-xl">Menampilkan</span>
-                    <select class="border border-solid border-black  px-2 py-2 rounded-md focus:outline-none">
-                        <option value="1">1</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                    </select>
+                    <form action="" method="get">
+                        <select name="data_count_kembali" onchange="this.form.submit()" class="border border-solid border-black  px-2 py-2 rounded-md focus:outline-none">
+                            <option value="5" <?= $selected_valueKembali === '5' ? 'selected' : '' ?>>5</option>
+                            <option value="10" <?= $selected_valueKembali === '10' ? 'selected' : '' ?>>10</option>
+                        </select>
+                    <noscript>
+                        <button type="submit" class="hidden">Submit</button>
+                    </noscript>
+                    </form>
                     <span class="text-xl">Data</span>
                 </div>
-                <div class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
-                    <input type="text" class="bg-transparent border-none focus:outline-none" placeholder="cari">
-                    <i class="fi fi-rr-search"></i>
-                </div>
+                <form class="flex flex-row justify-centerbitems-center space-x-2 border border-solid border-abu_border px-2 py-2 rounded-xl">
+                    <input type="text" name="search_kembali" value="<?= htmlspecialchars($searchKembali) ?>" class="bg-transparent border-none focus:outline-none" placeholder="Cari pengembalian">
+                    <button type="submit"><i class="fi fi-rr-search cursor-pointer"></i></button>
+                </form>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full table-auto">
@@ -306,35 +299,35 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Tanggal Pengembalian</span>
-                                <a href="?orderBy_kembali=tanggal_kembali&orderDir_kembali=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_kembali=tanggal_kembali&orderDir_kembali=<?= $orderDirKembali === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>ID</span>
-                                <a href="?orderBy_kembali=id&orderDir_kembali=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_kembali=id&orderDir_kembali=<?= $orderDirKembali === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Nama Anggota</span>
-                                <a href="?orderBy_kembali=nama&orderDir_kembali=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_kembali=nama&orderDir_kembali=<?= $orderDirKembali === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Judul Buku</span>
-                                <a href="?orderBy_kembali=judul&orderDir_kembali=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_kembali=judul&orderDir_kembali=<?= $orderDirKembali === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
                         <th class="px-4 py-2 border border-solid border-abu_border">
                             <div class="flex justify-between items-center cursor-pointer">
                                 <span>Denda</span>
-                                <a href="?orderBy_kembali=denda&orderDir_kembali=<?= $orderDir === 'ASC' ? 'DESC' : 'ASC' ?>">
+                                <a href="?orderBy_kembali=denda&orderDir_kembali=<?= $orderDirKembali === 'ASC' ? 'DESC' : 'ASC' ?>">
                                 <i class="fi fi-tr-sort-alt"></i></a>
                             </div>
                         </th>
@@ -342,27 +335,41 @@ $totalPagesKembali = ceil($totalDataKembali / $limit);
                     </tr>
                 </thead>                  
                     <tbody class="bg-abu1 border border-collapse border-abu1 overflow-y-scroll text-lg">
+                    <?php if ($resultKembali): ?>
                     <?php foreach ($resultKembali as $row): ?>                        
                         <tr class="border-b">
-                            <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $counter_pengembalian ?></td>
+                            <td class="px-4 py-2 text-center border border-right border-abu_border"><?= $counterKembali++ ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['tanggal_kembali'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['id'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['nama'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['judul'] ?></td>
                             <td class="px-4 py-2 border border-right border-abu_border"><?= $row['denda'] ?></td>
                         </tr>
-                    <?php $counter_pengembalian++;
-                    endforeach; ?>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" class="text-center text-gray-500 px-4 py-2 border-abu_border">Tidak ada data ditemukan</td>
+                        </tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
             <div id="akhir-tabel" class="flex flex-row justify-between items-center text-lg">
                 <div>
-                    <p>Menampilkan 0 dari 0 data</p>
+                    <p>Menampilkan 
+                        <?= count($resultKembali) ?> 
+                        dari 
+                        <?= $totalDataKembali ?> 
+                        data
+                    </p>
                 </div>
                 <div class="text-white font-medium space-x-3">
-                    <button id="tombol-kembali "class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">sebelumnya</button>
-                    <button id="tombol-selanjutnya" class="bg-biru_button px-5 py-1 rounded-xl hover:opacity-80">Selanjutnya</button>
+                    <?php if ($currentPageKembali > 1): ?>
+                        <a href="?page_kembali=<?= $currentPageKembali - 1 ?>&data_count_kembali=<?= $selected_valueKembali ?>&search_kembali=<?= $searchKembali ?>&orderBy_kembali=<?= $orderByKembali ?>&orderDir_kembali=<?= $orderDirKembali ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Sebelumnya</a>
+                    <?php endif; ?>
+                    <?php if ($currentPageKembali < $totalPagesKembali): ?>
+                        <a href="?page_kembali=<?= $currentPageKembali + 1 ?>&data_count_kembali=<?= $selected_valueKembali ?>&search_kembali=<?= $searchKembali ?>&orderBy_kembali=<?= $orderByKembali ?>&orderDir_kembali=<?= $orderDirKembali ?>" class="bg-biru_button px-5 py-2 rounded-xl hover:opacity-80 text-white font-medium">Selanjutnya</a>
+                    <?php endif; ?>
                 </div>
             </div>
     </section>
