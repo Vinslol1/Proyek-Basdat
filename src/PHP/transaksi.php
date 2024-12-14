@@ -123,17 +123,17 @@ $counterKembali = $startLimitKembali + 1;
     }
   </style>
 </head>
-<body class="bg-white flex flex-row h-screen font-sand w-screen">
-    <section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
+<body class="bg-white flex flex-row font-sand w-screen overflow-x-hidden overflow-y-auto">
+<section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
         <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
         </div>
-        <div class="flex flex-col w-full font-sand rounded-lg text-2xl text-white space-y-4 px-4">
+        <div class="flex flex-col w-full font-sand rounded-lg text-xl text-white space-y-2 px-4">
             <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
-            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer  active">
                 <p>Transaksi</p>
             </div>
             <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
@@ -145,17 +145,14 @@ $counterKembali = $startLimitKembali + 1;
             <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Anggota</p>
             </div>
-            <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Data Pengunjung</p>
-            </div>
         </div>        
     </section>
-    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0 overflow-x-hidden">
+    <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen overflow-x-hidden top-0">
         <div id="profil-pengguna" class="flex flex-row justify-end items-center p-8 space-x-3 text-biru_text font-medium">
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-3xl font-semibold">
+        <div class="flex my-4 px-12 text-2xl font-semibold">
             <p>Transaksi</p>
         </div>
         <div class="flex space-x-2">
