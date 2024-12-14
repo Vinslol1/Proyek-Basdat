@@ -94,24 +94,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white">
             <p class="font-bold text-2xl">Tambah Petugas</p>
             <form class="space-y-6 text-xl p-6" method="POST" action="tambah-petugas.php">
-                <div class="flex flex-row gap-8">
-                    <label for="nama-petugas" class="block text-gray-700 font-bold md:w-1/6 text-right">Nama</label>
-                    <input type="text" id="nama-petugas" name="nama" class="w-full border border-gray-300 rounded-md p-2 max-w-8xl">
-                </div>
-                <div class="flex flex-row gap-8">
-                    <label for="kontak-petugas" class="block text-gray-700 font-bold md:w-1/6 text-right">Telepon</label>
-                    <input type="text" id="kontak-petugas" name="kontak" class="w-full border border-gray-300 rounded-md p-2 max-w-8xl">
-                </div>
-                <div class="flex flex-row gap-8">
-                    <label for="email-petugas" class="block text-gray-700 font-bold md:w-1/6 text-right">Email</label>
-                    <input type="email" id="email-petugas" name="email" class="w-full border border-gray-300 rounded-md p-2 max-w-8xl">
-                </div>
-                <div class="flex flex-row gap-8 items-center">
-                    <label for="is-admin" class="block text-gray-700 font-bold md:w-1/6 text-right">Admin</label>
-                    <input type="checkbox" id="is-admin" name="is_admin" class="h-5 w-5 border-gray-300 rounded-md">
-                </div>
-                <div class="flex justify-end gap-4 mt-4 font-medium text-white text-xl">
-                    <button type="submit" id="tombol-simpan" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">Simpan</button>
+                <div class="flex flex-col gap-6">
+                    <div class="flex flex-row items-center gap-8">
+                        <label for="nama-petugas" class="block text-gray-700 font-bold w-1/6 text-right">Nama</label>
+                        <input type="text" id="nama-petugas" name="nama" class="flex-grow border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div class="flex flex-row items-center gap-8">
+                        <label for="kontak-petugas" class="block text-gray-700 font-bold w-1/6 text-right">Telepon</label>
+                        <input type="text" id="kontak-petugas" name="kontak" class="flex-grow border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div class="flex flex-row items-center gap-8">
+                        <label for="email-petugas" class="block text-gray-700 font-bold w-1/6 text-right">Email</label>
+                        <input type="email" id="email-petugas" name="email" class="flex-grow border border-gray-300 rounded-md p-2">
+                    </div>
+                    <div class="flex flex-row items-center gap-8">
+                        <label for="is-admin" class="block text-gray-700 font-bold w-1/6 text-right">Admin</label>
+                        <input type="checkbox" id="is-admin" name="is_admin" class="h-5 w-5 border-gray-300 rounded-md">
+                    </div>
+                    <div class="flex justify-end gap-4 mt-4 font-medium text-white text-xl">
+                        <button type="submit" id="tombol-simpan" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">Simpan</button>
+                    </div>
                 </div>
             </form>
         </div>
