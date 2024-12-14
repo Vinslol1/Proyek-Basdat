@@ -82,7 +82,7 @@
             <span>SATU PERPUS</span>
         </div>
         <div class="flex flex-col w-full font-sand rounded-lg text-xl text-white space-y-2 px-4">
-        <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Beranda</p>
             </div>
             <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
@@ -94,7 +94,7 @@
             <div id="sidebar-petugas" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Petugas</p>
             </div>
-            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer  ">
+            <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer  active">
                 <p>Data Anggota</p>
             </div>
         </div>        

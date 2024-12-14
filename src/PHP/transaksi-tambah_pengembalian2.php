@@ -59,17 +59,17 @@ try {
     }
   </style>
 </head>
-<body class="bg-white flex flex-row font-sand">
-    <section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
-        <div class="flex flex-row justify-center items-center w-full bg-abu1 px-4 py-2 rounded-lg space-x-5 text-2xl mb-12 text-biru_text">
+<body class="bg-white flex flex-row font-sand w-screen overflow-x-hidden overflow-y-hidden">
+<section id="sidebar" class="fixed top-0 left-0 h-screen w-1/6 bg-biru_sidebar flex flex-col px-4 py-20 z-50">
+        <div class="flex flex-row justify-center items-center w-full bg-abu1 p-2 rounded-lg space-x-5 text-lg mb-12 text-biru_text">
             <i id="icon-logo" class="fi fi-ts-book-open-reader"></i>
             <span>SATU PERPUS</span>
         </div>
-        <div class="flex flex-col w-full font-sand rounded-lg text-2xl text-white space-y-4 px-4">
-            <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
+        <div class="flex flex-col w-full font-sand rounded-lg text-xl text-white space-y-2 px-4">
+            <div id="sidebar-beranda" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
                 <p>Beranda</p>
             </div>
-            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer active">
+            <div id="sidebar-transaksi" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Transaksi</p>
             </div>
             <div id="sidebar-buku" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
@@ -81,12 +81,6 @@ try {
             <div id="sidebar-anggota" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
                 <p>Data Anggota</p>
             </div>
-            <div id="sidebar-pengunjung" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Data Pengunjung</p>
-            </div>
-            <div id="sidebar-pengaturan" class="hover:bg-biru_hover -ml-4 p-3 hover:rounded-md cursor-pointer">
-                <p>Pengaturan</p>
-            </div>
         </div>        
     </section>
     <section class="flex flex-col bg-abu2 w-5/6 ml-[16.67%] min-h-screen top-0 overflow-x-hidden">
@@ -94,14 +88,11 @@ try {
             <span class="flex items-center text-2xl">aska skata</span>
             <span id="icon-profil" class="material-symbols-outlined">account_circle</span>
         </div>
-        <div class="flex my-8 px-12 text-3xl font-semibold">
-            <p>Tambah Peminjaman</p>
+        <div class="flex my-4 px-12 text-2xl font-semibold">
+            <p>Transaksi</p>
         </div>
-        <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-green-500 mb-4">
-            <p class="text-2xl font-bold text-white">Sistem:</p>
-            <p class="text-2xl text-white">Data ditemukan.</p>
-        </div>
-
+        <div class="flex flex-col mx-12 my-4 p-4 rounded-lg shadow-md bg-white">
+            <p class="text-2xl font-bold">Tambah Pengembalian</p>
         <div class="flex flex-col mx-12 p-4 rounded-lg shadow-md bg-white">
             <div>
                 <div class="flex border-b-2 p-2 gap-5">
@@ -167,24 +158,14 @@ try {
                     <?php } ?>
                   </table>
         </div>
-            <div class="flex flex-row-reverse p-1">
-                <button id="selesai-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
-                    <p>Data Sudah Benar</p>
-                </button>
-                <button id="kembali-transaksi" class="bg-biru_button hover:opacity-90 flex justify-center items-center mx-5 text-2xl font-medium rounded-xl space-x-4 text-white p-2 w-1/6">
-                    <p>Kembali</p>
-                </button>
-            </div>
-
+        </div>
+        <div class="flex justify-end gap-4 mt-4 font-medium text-white text-xl">
+                <button id="selesai-transaksi" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">Data Sudah Benar</button>
         </div>
     </section>
     <script src="../js/asidehref.js"></script>
     <script>
-        const kembali = document.getElementById('kembali-transaksi');
         const selesai = document.getElementById('selesai-transaksi');
-        kembali.addEventListener('click', () => {
-            window.location.href = 'transaksi-tambah_pengembalian.php';    
-        });
         selesai.addEventListener('click', () => {
             window.location.href = 'transaksi.php';    
         });

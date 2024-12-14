@@ -155,7 +155,7 @@ if (isset($_POST['tambah_pengembalian'])) {
                 </div>
             </div>
             <div class="flex justify-end gap-4 mt-4 font-medium text-white text-xl">
-                <button type="submit" name="tambah_peminjaman" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">
+                <button type="submit" name="tambah_pengembalian" class="bg-biru_button px-8 py-2 rounded-xl hover:opacity-80">
                     <p>Simpan</p>
                 </button>
             </form>
